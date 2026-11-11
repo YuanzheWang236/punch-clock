@@ -1,14 +1,16 @@
 <!doctype html>
+<!-- © 2026 YuanzheWang236. All rights reserved. 保留所有权利，未经许可不得复制。 -->
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<meta name="author" content="YuanzheWang236">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>插卡打卡钟</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;800&family=DotGothic16&family=Long+Cang&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;800&family=DotGothic16&family=Caveat:wght@500;600&family=Long+Cang&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
 /* Layout: a white electronic time recorder (card feeds into the top slit) on the left; the day's printed attendance sheet on the right. Machine and paper are physical objects and keep their own colors in both themes. */
 :root {
@@ -43,6 +45,11 @@
   --f-pen: "Long Cang", "Kaiti SC", "STKaiti", "KaiTi", cursive;
   --f-body: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
 }
+html[lang="en"] { --f-pen: "Caveat", "Long Cang", "Kaiti SC", "STKaiti", "KaiTi", cursive; }
+html[lang="en"] .ctitle { letter-spacing: .5em; }
+html[lang="en"] .crow .lb { letter-spacing: .02em; }
+html[lang="en"] .cbars.blocks .cbar { grid-template-columns: 9.5em minmax(0, 1fr) auto; }
+html[lang="en"] .cbar { grid-template-columns: 6em minmax(0, 1fr) auto; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --bg: #1b1d20; --fg: #e4e6e8; --muted: #9aa1a8; --line: rgba(228, 230, 232, .14); --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500; --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767; --c-other: #77776f; --rp-bg: #22252a; --rp-head: #2a2e34; --rp-border: #3a3f46; --rp-text: #e6e8eb; --rp-sub: #a2a8b0; --rp-faint: #6c727a; --rp-hover: #2b3140; --rp-today: #26304a; --rp-blue: #6e95ff; --rp-blue-bg: #253257; --rp-green: #6ccf62; --rp-green-bg: #1f3a22; --rp-orange: #f2a540; --rp-orange-bg: #3e2e17; --rp-red: #ff7a72; --rp-red-bg: #45201f; color-scheme: dark; }
 }
@@ -67,6 +74,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .ghost { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer; color: var(--muted); font-size: 13px; }
 .ghost:hover { color: var(--fg); }
 a.ghost { text-decoration: none; }
+.copy { flex: none; text-align: center; font-size: 12px; color: var(--muted); padding: 0 16px 4px; }
+.copy a { color: inherit; }
+.copy a:hover { color: var(--fg); }
 
 .app { display: flex; flex-direction: column; gap: 12px; }
 .layout { width: 100%; max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(340px, 4.6fr) minmax(0, 7.4fr); gap: 28px; align-items: start; }
@@ -365,6 +375,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     <img id="avatar" alt="" hidden>
     <span id="whoName">正在连接…</span>
     <span class="mode" id="modeTag" hidden></span>
+    <button class="ghost" id="langBtn" type="button" title="Switch language / 切换语言">EN</button>
     <button class="ghost" id="soundBtn" type="button" aria-pressed="true">声音：开</button>
     <button class="ghost" id="bakOut" type="button" title="把本机的打卡记录存成一个文件" hidden>备份</button>
     <button class="ghost" id="bakIn" type="button" title="从备份文件恢复记录，会和现有记录合并" hidden>恢复</button>
@@ -453,6 +464,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     </div>
   </section>
 </main>
+<footer class="copy"><span id="copyTxt">© 2026 <a href="https://github.com/YuanzheWang236" target="_blank" rel="noopener">YuanzheWang236</a> · <span id="copyRest">保留所有权利，未经许可不得复制</span></span></footer>
 </div>
 
 
@@ -478,7 +490,45 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
 <script>
 (() => {
   const $ = s => document.querySelector(s);
-  const WK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const LANG = (() => { try { const v = localStorage.getItem('punch.lang'); if (v === 'en' || v === 'zh') return v; } catch (e) {} return /^zh/i.test(navigator.language || '') ? 'zh' : 'en'; })();
+  const EN = LANG === 'en';
+  const TX = (zh, en) => (EN ? en : zh);
+  const WK = EN ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const MONL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  /* static text */
+  (() => {
+    const btn = $('#langBtn'); btn.textContent = EN ? '中文' : 'EN';
+    btn.addEventListener('click', () => { try { localStorage.setItem('punch.lang', EN ? 'zh' : 'en'); } catch (e) {} try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: 'lang-' + (EN ? 'zh' : 'en'), title: 'lang', event: true }); } catch (e) {} setTimeout(() => location.reload(), 150); });
+    if (!EN) return;
+    document.documentElement.lang = 'en'; document.title = 'Punch Clock';
+    const T = (sel, text, attrs, all) => { const ns = all ? document.querySelectorAll(sel) : [document.querySelector(sel)]; ns.forEach(n => { if (!n) return; if (text != null) n.textContent = text; for (const a in attrs || {}) n.setAttribute(a, attrs[a]); }); };
+    T('.brand', 'Punch Clock'); T('#whoName', 'Connecting…');
+    T('#bakOut', 'Backup', { title: 'Save this browser’s records to a file' });
+    T('#bakIn', 'Restore', { title: 'Restore records from a backup file (merged with what is here)' });
+    T('#fbLink', 'Feedback');
+    T('.above .arrow span:last-child', 'Pull the card up to stop');
+    T('#card', null, { 'aria-label': 'Time card. Drag it into the slot to start, pull it up to stop; or press ↓ to punch in and ↑ to punch out' });
+    T('.band b', 'IN · OUT');
+    T('#cNo', null, { placeholder: 'No.', 'aria-label': 'Card number' });
+    document.querySelectorAll('.crow.r1 .lb')[1].textContent = 'Name';
+    T('#cName', null, { placeholder: 'Your name', 'aria-label': 'Name' });
+    T('#catLb', 'Type'); T('label[for="cTask"]', 'Task'); T('label[for="cDesc"]', 'Note');
+    T('#cTask', null, { placeholder: 'What are you working on?' });
+    T('#cDesc', null, { placeholder: 'A short note, add any time' });
+    T('.ctitle', 'TIME CARD'); T('.cgrid', null, { 'aria-label': 'Today’s punches' });
+    ['Task', 'In', 'Out', 'Time'].forEach((x, i) => { document.querySelectorAll('.cgrid th')[i].textContent = x; });
+    T('.cfoot span:last-child', 'PUNCH-24 CARD');
+    $('#ledIn').lastChild.textContent = 'RUNNING'; $('#ledOut').lastChild.textContent = 'DONE';
+    T('.report', null, { 'aria-label': 'Time report' }); T('.seg3', null, { 'aria-label': 'Report type' });
+    ['Day', 'Week', 'Month'].forEach((x, i) => { document.querySelectorAll('.seg3 button')[i].textContent = x; });
+    T('#prevP', null, { 'aria-label': 'Previous' }); T('#nextP', null, { 'aria-label': 'Next' }); T('#dayPick', null, { 'aria-label': 'Jump to a date' });
+    T('#addBtn', '+ Add entry');
+    T('label[for="eCat"]', 'Category'); T('label[for="eTask"]', 'Task (optional)'); T('label[for="eDesc"]', 'Note');
+    T('label[for="eStart"]', 'Start'); T('label[for="eEnd"]', 'End (00:00 = midnight)');
+    T('#copyRest', 'All rights reserved. Do not copy without permission.'); T('#dCancel', 'Cancel'); T('#dForm button[type="submit"]', 'Save');
+  })();
   const pad = n => String(n).padStart(2, '0');
   const keyOf = t => { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
   const startOfKey = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d).getTime(); };
@@ -487,7 +537,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   const hm = t => { const d = new Date(t); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
   const mins = ms => Math.max(0, Math.floor(ms / 60000));
   const durShort = m => `${Math.floor(m / 60)}:${pad(m % 60)}`;
-  const durLong = m => (m >= 60 ? `${Math.floor(m / 60)} 小时 ${pad(m % 60)} 分` : `${m} 分钟`);
+  const durLong = m => (EN ? (m >= 60 ? `${Math.floor(m / 60)}h ${pad(m % 60)}m` : `${m} min`) : (m >= 60 ? `${Math.floor(m / 60)} 小时 ${pad(m % 60)} 分` : `${m} 分钟`));
   const hms = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`; };
   const dayNo = k => { const t = startOfKey(k); const y = new Date(t).getFullYear(); return String(Math.round((t - new Date(y, 0, 1).getTime()) / 86400000) + 1).padStart(3, '0'); };
   const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -496,10 +546,10 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const state = { cardNo: '', name: '', mode: 'loading', days: {}, current: null, viewDate: keyOf(Date.now()), col: null, goal: 240 };
-  const DEFAULT_CATS = ['学习', '工作', '阅读', '运动', '生活', '其他'];
-  const cleanCats = a => { const out = []; if (Array.isArray(a)) for (const x of a) { const t = str(x, 8).trim(); if (t && !out.includes(t)) out.push(t); if (out.length >= 16) break; } return out.length ? out : DEFAULT_CATS.slice(); };
+  const DEFAULT_CATS = EN ? ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other'] : ['学习', '工作', '阅读', '运动', '生活', '其他'];
+  const cleanCats = a => { const out = []; if (Array.isArray(a)) for (const x of a) { const t = str(x, 12).trim(); if (t && !out.includes(t)) out.push(t); if (out.length >= 16) break; } return out.length ? out : DEFAULT_CATS.slice(); };
   state.cats = DEFAULT_CATS.slice();
-  let selCat = '学习';
+  let selCat = DEFAULT_CATS[0];
   try { const c = localStorage.getItem('punch.cat'); if (c) selCat = c; } catch (e) {}
   const cleanGoal = g => (typeof g === 'number' && g >= 30 && g <= 1440 ? g : 240);
   let busy = false, drag = null, pendingEdit = null, freshId = null;
@@ -512,7 +562,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   /* ── sound ── */
   let soundOn = true, actx = null;
   try { soundOn = localStorage.getItem('punch.sound') !== 'off'; } catch (e) {}
-  const paintSound = () => { const b = $('#soundBtn'); b.textContent = soundOn ? '声音：开' : '声音：关'; b.setAttribute('aria-pressed', String(soundOn)); };
+  const paintSound = () => { const b = $('#soundBtn'); b.textContent = soundOn ? TX('声音：开', 'Sound: on') : TX('声音：关', 'Sound: off'); b.setAttribute('aria-pressed', String(soundOn)); };
   $('#soundBtn').addEventListener('click', () => { soundOn = !soundOn; try { localStorage.setItem('punch.sound', soundOn ? 'on' : 'off'); } catch (e) {} paintSound(); });
   paintSound();
   function ac() { if (!soundOn) return null; try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); return actx; } catch (e) { return null; } }
@@ -571,9 +621,9 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   function enqueue(fn) { const p = queue.then(fn); queue = p.catch(() => {}); return p.catch(e => reportWriteError(e)); }
   function reportWriteError(e) {
     const c = e && e.code;
-    toast(c === 'invalid_argument' ? '没能保存：你对这个打卡器只有查看权限' : c === 'quota_exceeded' ? '记录库已满，删除一些旧记录后再试' : '保存失败，请稍后再试');
+    toast(c === 'invalid_argument' ? TX('没能保存：你对这个打卡器只有查看权限', 'Not saved: you only have view access') : c === 'quota_exceeded' ? TX('记录库已满，删除一些旧记录后再试', 'Storage is full. Delete some old records and try again') : TX('保存失败，请稍后再试', 'Save failed, please try again later'));
   }
-  function saveLocal() { try { localStorage.setItem('punch.v1', JSON.stringify({ days: state.days, current: state.current, goal: state.goal, cats: state.cats, cardNo: state.cardNo, name: state.name })); } catch (e) { toast('本机存储不可用，刷新后记录会丢失'); } }
+  function saveLocal() { try { localStorage.setItem('punch.v1', JSON.stringify({ days: state.days, current: state.current, goal: state.goal, cats: state.cats, cardNo: state.cardNo, name: state.name })); } catch (e) { toast(TX('本机存储不可用，刷新后记录会丢失', 'Browser storage is unavailable; records will be lost on refresh')); } }
   function saveDay(k) {
     const entries = (state.days[k] || []).slice().sort((a, b) => a.start - b.start);
     if (entries.length) state.days[k] = entries; else delete state.days[k];
@@ -592,8 +642,8 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     saveLocal(); return Promise.resolve();
   }
   const cleanEntries = arr => (Array.isArray(arr) ? arr : []).filter(e => e && typeof e.start === 'number' && typeof e.end === 'number' && e.end > e.start)
-    .map(e => ({ id: str(e.id, 40) || newId(), cat: str(e.cat, 8) || '未分类', task: str(e.task, 40) || str(e.cat, 8) || '未命名', desc: str(e.desc, 200), start: e.start, end: e.end }));
-  const cleanCurrent = c => (c && typeof c.start === 'number' ? { cat: str(c.cat, 8) || '未分类', task: str(c.task, 40) || str(c.cat, 8) || '未命名', desc: str(c.desc, 200), start: c.start } : null);
+    .map(e => ({ id: str(e.id, 40) || newId(), cat: str(e.cat, 12) || TX('未分类', 'Other'), task: str(e.task, 40) || str(e.cat, 12) || TX('未命名', 'Untitled'), desc: str(e.desc, 200), start: e.start, end: e.end }));
+  const cleanCurrent = c => (c && typeof c.start === 'number' ? { cat: str(c.cat, 12) || TX('未分类', 'Other'), task: str(c.task, 40) || str(c.cat, 12) || TX('未命名', 'Untitled'), desc: str(c.desc, 200), start: c.start } : null);
 
   function applyCurrent(cur) {
     const prev = state.current; state.current = cur;
@@ -612,8 +662,8 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       state.days = days; applyCurrent(cleanCurrent(raw.current)); state.goal = cleanGoal(raw.goal); state.cats = cleanCats(raw.cats);
       state.cardNo = str(raw.cardNo, 6).trim(); state.name = str(raw.name, 12).trim();
     } catch (e) {}
-    $('#whoName').textContent = window.claude ? '未登录' : ''; $('#cNo').value = state.cardNo; $('#cName').value = state.name;
-    const tag = $('#modeTag'); tag.hidden = false; tag.textContent = '本机模式'; $('#bakOut').hidden = $('#bakIn').hidden = false;
+    $('#whoName').textContent = window.claude ? TX('未登录', 'Not signed in') : ''; $('#cNo').value = state.cardNo; $('#cName').value = state.name;
+    const tag = $('#modeTag'); tag.hidden = false; tag.textContent = TX('本机模式', 'Local mode'); $('#bakOut').hidden = $('#bakIn').hidden = false;
     $('#note').textContent = reason; ready();
   }
   async function boot() {
@@ -621,13 +671,13 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (window.claude && typeof window.claude.use === 'function') { try { [user, db] = await Promise.all([window.claude.use('user'), window.claude.use('db')]); } catch (e) {}
       window.claude.use('downloads').then(d => { downloadsApi = d; renderSheet(); }).catch(() => {}); }
     const uid = user ? await user.id() : null;
-    if (!db || !uid) { startLocal(window.claude ? '未登录 claude.ai：记录只保存在这个浏览器里。登录后打开即可跨设备同步。' : '记录只保存在这个浏览器里，换设备或清除网站数据前请点「备份」。本页只做匿名访问统计，不收集打卡内容。'); return; }
-    const me = await user.me(); const nm = me.name || '我';
-    $('#whoName').textContent = me.name || '已登录'; if (!$('#cName').value) { $('#cName').value = nm; state.name = nm; }
+    if (!db || !uid) { startLocal(window.claude ? TX('未登录 claude.ai：记录只保存在这个浏览器里。登录后打开即可跨设备同步。', 'Not signed in to claude.ai: records stay in this browser. Sign in to sync across devices.') : TX('记录只保存在这个浏览器里，换设备或清除网站数据前请点「备份」。本页只做匿名访问统计，不收集打卡内容。', 'Your records stay in this browser only. Tap “Backup” before switching devices or clearing site data. This page counts anonymous visits only and never collects your entries.')); return; }
+    const me = await user.me(); const nm = me.name || TX('我', 'Me');
+    $('#whoName').textContent = me.name || TX('已登录', 'Signed in'); if (!$('#cName').value) { $('#cName').value = nm; state.name = nm; }
     if (me.avatarUrl) { const a = $('#avatar'); a.src = me.avatarUrl; a.hidden = false; }
     state.mode = 'remote'; state.col = db.collection('data/users/' + uid);
     let first = true;
-    const slow = setTimeout(() => { $('#note').textContent = '暂时连不上记录库，连上后会自动同步。'; }, 10000);
+    const slow = setTimeout(() => { $('#note').textContent = TX('暂时连不上记录库，连上后会自动同步。', 'Can’t reach storage right now; will sync once connected.'); }, 10000);
     state.col.onSnapshot(snap => {
       const days = {}; let cur = null;
       for (const d of snap.docs) {
@@ -642,7 +692,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       if (first) { first = false; ready(); } else render();
     }, err => {
       clearTimeout(slow);
-      $('#note').textContent = err.code === 'revoked' ? '访问权限已变更，当前记录为只读。' : '记录库连接中断，刷新页面可重新连接。';
+      $('#note').textContent = err.code === 'revoked' ? TX('访问权限已变更，当前记录为只读。', 'Access changed; records are now read-only.') : TX('记录库连接中断，刷新页面可重新连接。', 'Lost connection to storage. Refresh to reconnect.');
       if (first) { first = false; ready(); }
     });
   }
@@ -718,7 +768,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       b.addEventListener('click', () => pickCat(c)); box.appendChild(b);
     }
     if (state.cats.length < 16) {
-      const a = document.createElement('button'); a.type = 'button'; a.className = 'cat add'; a.textContent = '＋'; a.title = '添加类别'; a.setAttribute('aria-label', '添加类别');
+      const a = document.createElement('button'); a.type = 'button'; a.className = 'cat add'; a.textContent = '＋'; a.title = TX('添加类别', 'Add category'); a.setAttribute('aria-label', TX('添加类别', 'Add category'));
       a.addEventListener('click', addCatInput); box.appendChild(a);
     }
     const on = box.querySelector('[aria-checked="true"]'); if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
@@ -732,7 +782,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   }
   function addCatInput() {
     const box = $('#cCats'); box.textContent = '';
-    const inp = document.createElement('input'); inp.maxLength = 8; inp.placeholder = '新类别'; inp.setAttribute('aria-label', '新类别名称');
+    const inp = document.createElement('input'); inp.maxLength = 12; inp.placeholder = TX('新类别', 'New'); inp.setAttribute('aria-label', TX('新类别名称', 'New category name'));
     let done = false;
     const finish = ok => {
       if (done) return; done = true;
@@ -752,7 +802,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (!cat) {
       busy = true;
       if (cardY > OUT + 10) { await setY(OUT + 4, 260, 'cubic-bezier(.2,1.6,.4,1)'); } else { await setY(OUT + 40, 120, 'ease-in'); await setY(OUT, 260, 'cubic-bezier(.2,1.6,.4,1)'); }
-      sndBeep(3); lcdSay('请先选类别', 2200);
+      sndBeep(3); lcdSay(TX('请先选类别', 'PICK A TYPE'), 2200);
       const r = $('#rowCat'); r.classList.remove('flash'); void r.offsetWidth; r.classList.add('flash');
       busy = false; return;
     }
@@ -763,7 +813,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const start = Date.now();
     state.current = { cat, task, desc: $('#cDesc').value.trim(), start };
     state.viewDate = keyOf(start);
-    lcdSay('打印中…'); sndPrint();
+    lcdSay(TX('打印中…', 'PRINTING…')); sndPrint();
     $('#ledIn').classList.add('on');
     render();
     await wait(reduced ? 0 : 420);
@@ -780,7 +830,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     ended.add(cur.start);
     const cat = cur.cat, task = $('#cTask').value.trim() || cat, desc = $('#cDesc').value.trim();
     if (cardY > OUT_AT) await setY(OUT_AT, 200, 'ease-in');
-    jolt(); sndClunk(); sndPrint(); lcdSay('打印中…');
+    jolt(); sndClunk(); sndPrint(); lcdSay(TX('打印中…', 'PRINTING…'));
     const end = Date.now(); const touched = []; let s = cur.start, lastId = null;
     while (s < end) {
       const e = Math.min(end, nextMidnight(s)), k = keyOf(s); lastId = newId();
@@ -800,7 +850,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     $('#cTask').value = ''; $('#cDesc').value = '';
     busy = false; render();
     track('punch-out');
-    toast(`已拔卡：${cat}${task !== cat ? ' · ' + task : ''} · ${durLong(mins(end - cur.start))}`);
+    toast(`${TX('已拔卡：', 'Punched out: ')}${cat}${task !== cat ? ' · ' + task : ''} · ${durLong(mins(end - cur.start))}`);
     for (const k of touched) await saveDay(k);
     await saveCurrent(null);
   }
@@ -836,7 +886,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     $('#lcdDate').textContent = `${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())}`;
     $('#lcdWk').textContent = WK[now.getDay()];
     $('#lcdTime').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-    if (!lcdOverride) $('#lcdMsg').textContent = state.mode === 'loading' ? '读取中…' : state.current ? `IN ${hm(state.current.start)}` : '请插卡';
+    if (!lcdOverride) $('#lcdMsg').textContent = state.mode === 'loading' ? TX('读取中…', 'LOADING…') : state.current ? `IN ${hm(state.current.start)}` : TX('请插卡', 'INSERT CARD');
   }
   function renderMachine() {
     const active = !!state.current;
@@ -844,8 +894,8 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     $('#above').hidden = !active;
     if (active) $('#aboveTask').textContent = state.current.task !== state.current.cat ? `${state.current.cat} · ${state.current.task}` : state.current.cat;
     renderCats();
-    $('#helpText').textContent = active ? '把卡往上拔出来，结束这一段' : '选类别、写事项，把卡推进卡槽';
-    $('#actBtn').textContent = active ? '拔卡 · 结束' : '插卡 · 开始';
+    $('#helpText').textContent = active ? TX('把卡往上拔出来，结束这一段', 'Pull the card up to stop') : TX('选类别、写事项，把卡推进卡槽', 'Pick a type, add a task, push the card in');
+    $('#actBtn').textContent = active ? TX('拔卡 · 结束', 'Punch out') : TX('插卡 · 开始', 'Punch in');
     $('#actBtn').disabled = state.mode === 'loading';
     const tk = keyOf(Date.now());
     $('#cDate').textContent = tk.replace(/-/g, '.');
@@ -905,11 +955,11 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   }
   function openDay(k) { view = 'day'; state.viewDate = k; saveView(); renderSheet(); }
   function delta(cur, prev, label) {
-    if (!prev && !cur) return `${label}也没有记录`;
-    if (!prev) return `${label}没有记录`;
+    if (!prev && !cur) return TX(`${label}也没有记录`, `Nothing logged ${label} either`);
+    if (!prev) return TX(`${label}没有记录`, `Nothing logged ${label}`);
     const d = cur - prev, pct = Math.round(Math.abs(d) / prev * 100);
-    if (d === 0) return `与${label}持平`;
-    return `比${label}${d > 0 ? '多' : '少'} ${hmDur(Math.abs(d))}（${d > 0 ? '▲' : '▼'}${pct}%）`;
+    if (d === 0) return TX(`与${label}持平`, `Same as ${label}`);
+    return EN ? `${d > 0 ? '▲' : '▼'} ${hmDur(Math.abs(d))} vs. ${label}` : `比${label}${d > 0 ? '多' : '少'} ${hmDur(Math.abs(d))}（${d > 0 ? '▲' : '▼'}${pct}%）`;
   }
   function kpi(box, k, v, unit, s) { const d = el('div'); d.appendChild(el('div', 'k', k)); const vv = el('div', 'v', v); if (unit) vv.appendChild(el('small', null, unit)); d.appendChild(vv); d.appendChild(el('div', 's', s || ' ')); box.appendChild(d); }
   function section(parent, title, sub) { const s = el('section', 'sec'); const h = el('h3', null, title); if (sub) h.appendChild(el('span', null, sub)); s.appendChild(h); parent.appendChild(s); return s; }
@@ -919,7 +969,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   function showTip(box, x, y, title, rows, total) {
     const t = tipFor(box); t.textContent = ''; t.appendChild(el('b', null, title));
     for (const [c, m, label] of rows) { const r = el('div'); const l = el('span'); l.append(swatch(c), label || c); r.append(l, el('span', null, hmDur(m))); t.appendChild(r); }
-    if (total != null) { const r = el('div', 'tt'); r.append(el('span', null, '合计'), el('span', null, hmDur(total))); t.appendChild(r); }
+    if (total != null) { const r = el('div', 'tt'); r.append(el('span', null, TX('合计', 'Total')), el('span', null, hmDur(total))); t.appendChild(r); }
     t.hidden = false;
     const bw = box.clientWidth, tw = t.offsetWidth, th = t.offsetHeight;
     t.style.left = Math.max(0, Math.min(bw - tw, x - tw / 2)) + 'px';
@@ -933,7 +983,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const step = [1, 2, 3, 4, 6, 8][[1, 2, 3, 4, 6, 8].findIndex(s => maxM / 60 / s <= 5)] || 8;
     const topH = Math.ceil(maxM / 60 / step) * step, topM = topH * 60;
     const y = m => T + (1 - m / topM) * (H - T - B);
-    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': '每日用时柱状图' });
+    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': TX('每日用时柱状图', 'Daily time bar chart') });
     for (let h = 0; h <= topH; h += step) {
       svg.appendChild(sv('line', { class: h ? 'grid' : 'base', x1: L, x2: W - R, y1: y(h * 60), y2: y(h * 60) }));
       svg.appendChild(sv('text', { class: 'ax', x: L - 8, y: y(h * 60) + 4, 'text-anchor': 'end' }, `${h}h`));
@@ -953,13 +1003,13 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
         const path = sv('path', { d, fill: catColor(c) }); path.style.pointerEvents = 'none'; svg.appendChild(path);
       });
       if (i % every === 0 || p.k === today) {
-        const lbl = n <= 7 ? [wk(p.k).slice(1), md(p.k)] : [String(Number(p.k.slice(8)))];
+        const lbl = n <= 7 ? [EN ? wk(p.k) : wk(p.k).slice(1), md(p.k)] : [String(Number(p.k.slice(8)))];
         lbl.forEach((t, li) => svg.appendChild(sv('text', { class: 'ax' + (p.k === today ? ' on' : ''), x: cx, y: H - B + 16 + li * 13, 'text-anchor': 'middle' }, t)));
       }
       const enter = () => {
         svg.querySelectorAll('.hit.on').forEach(h => h.classList.remove('on')); hit.classList.add('on');
         const rows = cats.map(c => [c, mins(p.by[c])]).sort((a, b) => b[1] - a[1]);
-        showTip(box, cx / W * box.clientWidth, y(p.used) / H * H, `${md(p.k)} ${wk(p.k)}${p.k === today ? ' · 今天' : ''}`, rows.length ? rows : [], p.used);
+        showTip(box, cx / W * box.clientWidth, y(p.used) / H * H, `${md(p.k)} ${wk(p.k)}${p.k === today ? TX(' · 今天', ' · Today') : ''}`, rows.length ? rows : [], p.used);
       };
       hit.addEventListener('mouseenter', enter);
       hit.addEventListener('mouseleave', () => { hit.classList.remove('on'); hideTip(box); });
@@ -971,7 +1021,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   function dayChart(box, k, list) {
     const W = Math.max(280, box.clientWidth || 600), H = 74, L = 6, R = 6, T = 8, LH = 34;
     const s0 = startOfKey(k), span = nextMidnight(s0) - s0, x = t => L + (t - s0) / span * (W - L - R);
-    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': '当天 24 小时分布' });
+    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': TX('当天 24 小时分布', '24-hour timeline') });
     svg.appendChild(sv('rect', { x: L, y: T, width: W - L - R, height: LH, fill: 'var(--rp-head)', rx: 4 }));
     for (let h = 0; h <= 24; h += 3) {
       const xx = L + h / 24 * (W - L - R);
@@ -982,7 +1032,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       const x0 = x(e.start), w = Math.max(3, x(e.end) - x0);
       const r = sv('rect', { x: x0, y: T + 3, width: w, height: LH - 6, rx: 3, fill: catColor(e.cat) });
       r.style.cursor = 'pointer';
-      r.addEventListener('mouseenter', () => showTip(box, x0 + w / 2, T, `${hm(e.start)}–${e.live ? '现在' : hm(e.end)}`, [[e.cat, mins(e.end - e.start), e.task === e.cat ? e.cat : `${e.cat} · ${e.task}`]]));
+      r.addEventListener('mouseenter', () => showTip(box, x0 + w / 2, T, `${hm(e.start)}–${e.live ? TX('现在', 'now') : hm(e.end)}`, [[e.cat, mins(e.end - e.start), e.task === e.cat ? e.cat : `${e.cat} · ${e.task}`]]));
       r.addEventListener('mouseleave', () => hideTip(box));
       svg.appendChild(r);
     }
@@ -993,7 +1043,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   function catBars(parent, byMs) {
     const names = Object.keys(byMs).sort((a, b) => byMs[b] - byMs[a]);
     const tot = names.reduce((a, c) => a + byMs[c], 0);
-    if (!tot) { parent.appendChild(el('div', 'nodata', '这一期还没有记录。')); return; }
+    if (!tot) { parent.appendChild(el('div', 'nodata', TX('这一期还没有记录。', 'No records for this period yet.'))); return; }
     const box = el('div', 'cbars'); const max = byMs[names[0]];
     for (const c of names) {
       const row = el('div', 'cbar'); const nm = el('span', 'nm'); nm.append(swatch(c), c);
@@ -1006,19 +1056,19 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   // Share of the whole day: each category and the free time as a fraction of 24h × days.
   function shareSection(doc, byCat, days, entries) {
     const base = 1440 * Math.max(1, days);
-    const sec = section(doc, '24 小时占比', days > 1 ? `以已过的 ${days} 天 × 24 小时为整体` : '以一天 24 小时为整体');
+    const sec = section(doc, TX('24 小时占比', '24-hour share'), days > 1 ? TX(`以已过的 ${days} 天 × 24 小时为整体`, `Out of ${days} days × 24 h so far`) : TX('以一天 24 小时为整体', 'Out of one 24-hour day'));
     const cats = Object.keys(byCat).sort((a, b) => catOrder(a) - catOrder(b));
     const usedM = Math.min(base, cats.reduce((a, c) => a + mins(byCat[c]), 0));
     const freeM = base - usedM;
     const pct = m => (m / base * 100);
     const fmtPct = m => { const v = pct(m); return (v > 0 && v < 1 ? v.toFixed(1) : Math.round(v)) + '%'; };
     const bar = el('div', 'share'); bar.setAttribute('role', 'img');
-    bar.setAttribute('aria-label', `已记录占 ${fmtPct(usedM)}，空余占 ${fmtPct(freeM)}`);
-    for (const c of cats) { const m = mins(byCat[c]); if (!m) continue; const i = el('i'); i.style.flex = `${m} 0 0`; i.style.background = catColor(c); i.title = `${c} ${hmDur(m)} · 占全天 ${fmtPct(m)}`; bar.appendChild(i); }
-    if (freeM) { const i = el('i', 'free'); i.style.flex = `${freeM} 0 0`; i.title = `空余 ${hmDur(freeM)} · ${fmtPct(freeM)}`; bar.appendChild(i); }
+    bar.setAttribute('aria-label', TX(`已记录占 ${fmtPct(usedM)}，空余占 ${fmtPct(freeM)}`, `Logged ${fmtPct(usedM)}, free ${fmtPct(freeM)}`));
+    for (const c of cats) { const m = mins(byCat[c]); if (!m) continue; const i = el('i'); i.style.flex = `${m} 0 0`; i.style.background = catColor(c); i.title = `${c} ${hmDur(m)} · ${TX('占全天', 'of the day')} ${fmtPct(m)}`; bar.appendChild(i); }
+    if (freeM) { const i = el('i', 'free'); i.style.flex = `${freeM} 0 0`; i.title = `${TX('空余', 'Free')} ${hmDur(freeM)} · ${fmtPct(freeM)}`; bar.appendChild(i); }
     sec.appendChild(bar);
     const two = el('div', 'two'); sec.appendChild(two);
-    const left = el('div'); left.appendChild(el('p', 'subh', `已记录 ${hmDur(usedM)}，占 ${fmtPct(usedM)}`));
+    const left = el('div'); left.appendChild(el('p', 'subh', TX(`已记录 ${hmDur(usedM)}，占 ${fmtPct(usedM)}`, `Logged ${hmDur(usedM)}, ${fmtPct(usedM)}`)));
     const rows = el('div', 'cbars');
     const row = (sw, name, m, cls, fillCls, color) => {
       const r = el('div', 'cbar' + (cls ? ' ' + cls : '')); const nm = el('span', 'nm'); nm.append(sw, name);
@@ -1027,18 +1077,18 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       r.append(nm, tr, vl); return r;
     };
     for (const c of cats.slice().sort((a, b) => byCat[b] - byCat[a])) rows.appendChild(row(swatch(c), c, mins(byCat[c]), '', '', catColor(c)));
-    rows.appendChild(row(el('span', 'sw free'), '空余', freeM, 'freerow', 'free'));
+    rows.appendChild(row(el('span', 'sw free'), TX('空余', 'Free'), freeM, 'freerow', 'free'));
     left.appendChild(rows); two.appendChild(left);
     // Time-of-day blocks: how much of each 6-hour block was recorded.
     const right = el('div');
-    const names = [['凌晨', '0–6'], ['上午', '6–12'], ['下午', '12–18'], ['晚上', '18–24']];
+    const names = [[TX('凌晨', 'Night'), '0–6'], [TX('上午', 'Morning'), '6–12'], [TX('下午', 'Afternoon'), '12–18'], [TX('晚上', 'Evening'), '18–24']];
     const got = [0, 0, 0, 0];
     for (const e of entries) {
       const d0 = startOfKey(keyOf(e.start));
       for (let b = 0; b < 4; b++) { const s0 = d0 + b * 6 * 3600000, s1 = d0 + (b + 1) * 6 * 3600000; const ov = Math.min(e.end, s1) - Math.max(e.start, s0); if (ov > 0) got[b] += ov; }
     }
     const blockBase = 360 * Math.max(1, days);
-    right.appendChild(el('p', 'subh', '各时段被用掉的比例'));
+    right.appendChild(el('p', 'subh', TX('各时段被用掉的比例', 'Share of each part of the day used')));
     const br = el('div', 'cbars blocks');
     names.forEach(([n, h], b) => {
       const m = Math.min(blockBase, mins(got[b])); const r = el('div', 'cbar'); const nm = el('span', 'nm'); nm.append(n); nm.appendChild(el('small', null, h));
@@ -1050,7 +1100,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     return usedM / base;
   }
   function notesList(parent, items) {
-    if (!items.length) { parent.appendChild(el('div', 'nodata', '有了记录之后，这里会自动写出小结。')); return; }
+    if (!items.length) { parent.appendChild(el('div', 'nodata', TX('有了记录之后，这里会自动写出小结。', 'A summary will appear here once you have records.'))); return; }
     const ul = el('ul', 'notes');
     for (const parts of items) { const li = el('li'); for (const p of parts) li.append(typeof p === 'string' ? p : el('b', null, p.b)); ul.appendChild(li); }
     parent.appendChild(ul);
@@ -1072,12 +1122,12 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const scrollTop = $('#view').scrollTop;
     const v = $('#view'); v.textContent = '';
     const doc = el('div', 'doc'); v.appendChild(doc);
-    const gen = `生成于 ${now.getMonth() + 1}/${now.getDate()} ${hm(now)}`;
+    const gen = `${TX('生成于', 'Generated')} ${now.getMonth() + 1}/${now.getDate()} ${hm(now)}`;
     const head = el('header', 'doc-h'); doc.appendChild(head);
     $('#addBtn').hidden = view !== 'day' || state.viewDate > today || loading;
     if (!exporting) {
-      $('#expReport').textContent = `导出${view === 'day' ? '日报' : view === 'week' ? '周报' : '月报'} PDF`;
-      $('#expCard').textContent = `导出${view === 'day' ? '当天' : view === 'week' ? '本周' : '本月'}打卡卡 PDF`;
+      $('#expReport').textContent = EN ? `Export ${view === 'day' ? 'daily' : view === 'week' ? 'weekly' : 'monthly'} report PDF` : `导出${view === 'day' ? '日报' : view === 'week' ? '周报' : '月报'} PDF`;
+      $('#expCard').textContent = EN ? 'Export time card PDF' : `导出${view === 'day' ? '当天' : view === 'week' ? '本周' : '本月'}打卡卡 PDF`;
     }
     $('#expReport').hidden = $('#expCard').hidden = !(downloadsApi || !window.claude) || loading;
     let longest = null; for (const e of all) if (!longest || e.end - e.start > longest.end - longest.start) longest = e;
@@ -1085,97 +1135,113 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (view === 'day') {
       const k = state.viewDate, p = per[0];
       $('#plabel').textContent = `${k.replace(/-/g, '/')} ${wk(k)}`;
-      $('#todayBtn').textContent = '今天'; $('#todayBtn').hidden = k === today;
-      head.append(el('div', 'kicker', 'Daily Report · 日报'), el('h2', null, `${Number(k.slice(5, 7))} 月 ${Number(k.slice(8))} 日 ${wk(k)}`), el('div', 'meta', `${who()}${gen}`));
+      $('#todayBtn').textContent = TX('今天', 'Today'); $('#todayBtn').hidden = k === today;
+      head.append(el('div', 'kicker', TX('Daily Report · 日报', 'Daily Report')), el('h2', null, EN ? `${wk(k)}, ${MON[Number(k.slice(5, 7)) - 1]} ${Number(k.slice(8))}` : `${Number(k.slice(5, 7))} 月 ${Number(k.slice(8))} 日 ${wk(k)}`), el('div', 'meta', `${who()}${gen}`));
       const kp = el('div', 'kpis'); doc.appendChild(kp);
-      kpi(kp, '记录时长', String(Math.floor(p.used / 60)), `小时 ${pad(p.used % 60)} 分`, p.list.some(e => e.live) ? '含进行中的一段' : '');
-      kpi(kp, '空余时间', String(Math.floor((1440 - p.used) / 60)), `小时 ${pad((1440 - p.used) % 60)} 分`, '24 小时 − 记录时长');
-      kpi(kp, '记录段数', String(p.list.length), '段', p.list.length ? `${Object.keys(p.by).length} 个类别` : '');
-      kpi(kp, '与前一天比', p.used - prev.used >= 0 ? `+${hmDur(p.used - prev.used)}` : `−${hmDur(prev.used - p.used)}`, '', `前一天 ${hmDur(prev.used)}`);
-      const s1 = section(doc, '时间分布', '0:00 – 24:00，按类别着色'); const cb = el('div', 'chart'); s1.appendChild(cb); dayChart(cb, k, p.list);
+      kpi(kp, TX('记录时长', 'Logged'), String(Math.floor(p.used / 60)), TX(`小时 ${pad(p.used % 60)} 分`, `h ${pad(p.used % 60)}m`), p.list.some(e => e.live) ? TX('含进行中的一段', 'Includes a running entry') : '');
+      kpi(kp, TX('空余时间', 'Free time'), String(Math.floor((1440 - p.used) / 60)), TX(`小时 ${pad((1440 - p.used) % 60)} 分`, `h ${pad((1440 - p.used) % 60)}m`), TX('24 小时 − 记录时长', '24 h − logged'));
+      kpi(kp, TX('记录段数', 'Entries'), String(p.list.length), TX('段', ''), p.list.length ? TX(`${Object.keys(p.by).length} 个类别`, plural(Object.keys(p.by).length, 'category').replace('categorys', 'categories')) : '');
+      kpi(kp, TX('与前一天比', 'vs. previous day'), p.used - prev.used >= 0 ? `+${hmDur(p.used - prev.used)}` : `−${hmDur(prev.used - p.used)}`, '', TX(`前一天 ${hmDur(prev.used)}`, `Previous day ${hmDur(prev.used)}`));
+      const s1 = section(doc, TX('时间分布', 'Timeline'), TX('0:00 – 24:00，按类别着色', '0:00 – 24:00, colored by category')); const cb = el('div', 'chart'); s1.appendChild(cb); dayChart(cb, k, p.list);
       const lg = el('div', 'legend'); for (const c of catsSorted) { const sp = el('span'); sp.append(swatch(c), c); lg.appendChild(sp); } s1.appendChild(lg);
       const dayShare = shareSection(doc, byCat, 1, p.list);
       const two = el('div', 'two'); doc.appendChild(two);
-      const sa = section(two, '类别分布'); catBars(sa, byCat);
-      const sb = section(two, '小结'); const notes = [];
+      const sa = section(two, TX('类别分布', 'By category')); catBars(sa, byCat);
+      const sb = section(two, TX('小结', 'Summary')); const notes = [];
       if (p.list.length) {
         const f = p.list[0], l = p.list[p.list.length - 1];
+        if (EN) {
+          notes.push(['First entry started at ', { b: hm(f.start) }, ', ', l.live ? 'and the last one is still running.' : 'and the last one ended at ', ...(l.live ? [] : [{ b: hm(l.end) }, '.'])]);
+          notes.push(['Logged ', { b: hmDur(p.used) }, ` in total, ${Math.round(dayShare * 100)}% of the day; ${hmDur(1440 - p.used)} free.`]);
+          if (catsSorted[0]) notes.push(['Most time went to ', { b: catsSorted[0] }, ` (${Math.round(byCat[catsSorted[0]] / totMs * 100)}%).`]);
+          if (longest) notes.push(['Longest entry: ', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `, ${hmDur(mins(longest.end - longest.start))}.`]);
+        } else {
         notes.push(['第一段从 ', { b: hm(f.start) }, ' 开始，', l.live ? '最后一段还在进行中。' : '最后一段在 ', ...(l.live ? [] : [{ b: hm(l.end) }, ' 结束。'])]);
         notes.push(['共记录 ', { b: hmDur(p.used) }, `，占全天的 ${Math.round(dayShare * 100)}%，空余 ${hmDur(1440 - p.used)}。`]);
         if (catsSorted[0]) notes.push(['用时最多的是 ', { b: catsSorted[0] }, `，占 ${Math.round(byCat[catsSorted[0]] / totMs * 100)}%。`]);
         if (longest) notes.push(['最长的一段：', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `，${hmDur(mins(longest.end - longest.start))}。`]);
+        }
       }
       notesList(sb, notes);
-      const sc = section(doc, '记录明细', p.list.length ? `${p.list.length} 段` : '');
-      if (!p.list.length) sc.appendChild(el('div', 'empty', loading ? '正在读取记录…' : k > today ? '这一天还没到。' : k === today ? '今天还没有记录。在左边的卡上选好类别，把卡推进卡槽就开始计时。' : '这一天没有记录。漏记了可以点右下角“补记一段”。'));
+      const sc = section(doc, TX('记录明细', 'Entries'), p.list.length ? TX(`${p.list.length} 段`, plural(p.list.length, 'entry').replace('entrys', 'entries')) : '');
+      if (!p.list.length) sc.appendChild(el('div', 'empty', loading ? TX('正在读取记录…', 'Loading records…') : k > today ? TX('这一天还没到。', 'This day hasn’t come yet.') : k === today ? TX('今天还没有记录。在左边的卡上选好类别，把卡推进卡槽就开始计时。', 'Nothing logged today. Pick a type on the card at left and push it into the slot to start the clock.') : TX('这一天没有记录。漏记了可以点右下角“补记一段”。', 'No records this day. Forgot to punch? Use “+ Add entry” at the bottom right.')));
       else {
         const wrap = el('div', 'tblwrap'); const t = el('table', 'tbl'); const hr = el('tr');
-        [['#'], ['类别'], ['事项'], ['说明'], ['开始'], ['结束'], ['时长', 'r'], ['']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
+        [['#'], [TX('类别', 'Category')], [TX('事项', 'Task')], [TX('说明', 'Note')], [TX('开始', 'Start')], [TX('结束', 'End')], [TX('时长', 'Duration'), 'r'], ['']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
         const th = el('thead'); th.appendChild(hr); t.appendChild(th); const tb = el('tbody');
         p.list.forEach((e, i) => {
           const tr = el('tr');
           tr.appendChild(el('td', 'muted', String(i + 1)));
           const ct = el('td', 'cattd'); ct.append(swatch(e.cat), e.cat); tr.appendChild(ct);
-          const tk = el('td', 'task', e.task === e.cat ? '—' : e.task); if (e.live) tk.appendChild(el('span', 'tag', '进行中')); tr.appendChild(tk);
+          const tk = el('td', 'task', e.task === e.cat ? '—' : e.task); if (e.live) tk.appendChild(el('span', 'tag', TX('进行中', 'Running'))); tr.appendChild(tk);
           tr.appendChild(el('td', 'wrap', e.desc || '—'));
-          const ic = el('td', null, hm(e.start)); if (e.cont) ic.appendChild(el('span', 'tag', '接前一天')); tr.appendChild(ic);
-          tr.appendChild(el('td', e.live ? 'muted' : null, e.live ? '进行中' : (e.end === nextMidnight(startOfKey(k)) ? '24:00' : hm(e.end))));
+          const ic = el('td', null, hm(e.start)); if (e.cont) ic.appendChild(el('span', 'tag', TX('接前一天', 'from prev. day'))); tr.appendChild(ic);
+          tr.appendChild(el('td', e.live ? 'muted' : null, e.live ? TX('进行中', 'Running') : (e.end === nextMidnight(startOfKey(k)) ? '24:00' : hm(e.end))));
           const d = el('td', 'r', hmDur(mins(e.end - e.start))); if (e.live) d.id = 'liveDur'; tr.appendChild(d);
-          const op = el('td'); const b = el('button', 'lnk', e.live ? '在卡上改' : '编辑'); b.type = 'button';
+          const op = el('td'); const b = el('button', 'lnk', e.live ? TX('在卡上改', 'Edit on card') : TX('编辑', 'Edit')); b.type = 'button';
           b.addEventListener('click', () => (e.live ? $('#cDesc').focus() : openEdit(k, e.id))); op.appendChild(b); tr.appendChild(op);
           tb.appendChild(tr);
         });
         t.appendChild(tb);
-        const tf = el('tfoot'); const fr = el('tr'); const fl = el('td', null, '合计'); fl.colSpan = 6; fr.appendChild(fl); fr.appendChild(el('td', 'r', hmDur(p.used))); fr.appendChild(el('td')); tf.appendChild(fr); t.appendChild(tf);
+        const tf = el('tfoot'); const fr = el('tr'); const fl = el('td', null, TX('合计', 'Total')); fl.colSpan = 6; fr.appendChild(fl); fr.appendChild(el('td', 'r', hmDur(p.used))); fr.appendChild(el('td')); tf.appendChild(fr); t.appendChild(tf);
         wrap.appendChild(t); sc.appendChild(wrap);
       }
-      $('#footNote').textContent = '空余 = 24 小时 − 当天已记录时长';
+      $('#footNote').textContent = TX('空余 = 24 小时 − 当天已记录时长', 'Free = 24 h − time logged that day');
       v.scrollTop = scrollTop; return;
     }
 
     const isWeek = view === 'week';
-    const label = isWeek ? '上周' : '上月';
+    const label = isWeek ? TX('上周', 'last week') : TX('上月', 'last month');
     const [yy, mm] = state.viewDate.split('-').map(Number);
     if (isWeek) {
       $('#plabel').textContent = `${md(keys[0])} – ${md(keys[6])}`;
-      $('#todayBtn').textContent = '本周'; $('#todayBtn').hidden = keys.includes(today);
-      head.append(el('div', 'kicker', 'Weekly Report · 周报'), el('h2', null, `${new Date(startOfKey(keys[3])).getFullYear()} 年第 ${isoWeek(keys[0])} 周`), el('div', 'meta', `${md(keys[0])} ${wk(keys[0])} – ${md(keys[6])} ${wk(keys[6])} · ${who()}${gen}`));
+      $('#todayBtn').textContent = TX('本周', 'This week'); $('#todayBtn').hidden = keys.includes(today);
+      head.append(el('div', 'kicker', TX('Weekly Report · 周报', 'Weekly Report')), el('h2', null, EN ? `Week ${isoWeek(keys[0])}, ${new Date(startOfKey(keys[3])).getFullYear()}` : `${new Date(startOfKey(keys[3])).getFullYear()} 年第 ${isoWeek(keys[0])} 周`), el('div', 'meta', `${md(keys[0])} ${wk(keys[0])} – ${md(keys[6])} ${wk(keys[6])} · ${who()}${gen}`));
     } else {
-      $('#plabel').textContent = `${yy} 年 ${mm} 月`;
-      $('#todayBtn').textContent = '本月'; $('#todayBtn').hidden = today.slice(0, 7) === state.viewDate.slice(0, 7);
-      head.append(el('div', 'kicker', 'Monthly Report · 月报'), el('h2', null, `${yy} 年 ${mm} 月`), el('div', 'meta', `${md(keys[0])} – ${md(keys[keys.length - 1])}，共 ${keys.length} 天 · ${who()}${gen}`));
+      $('#plabel').textContent = EN ? `${MON[mm - 1]} ${yy}` : `${yy} 年 ${mm} 月`;
+      $('#todayBtn').textContent = TX('本月', 'This month'); $('#todayBtn').hidden = today.slice(0, 7) === state.viewDate.slice(0, 7);
+      head.append(el('div', 'kicker', TX('Monthly Report · 月报', 'Monthly Report')), el('h2', null, EN ? `${MONL[mm - 1]} ${yy}` : `${yy} 年 ${mm} 月`), el('div', 'meta', EN ? `${md(keys[0])} – ${md(keys[keys.length - 1])}, ${keys.length} days · ${who()}${gen}` : `${md(keys[0])} – ${md(keys[keys.length - 1])}，共 ${keys.length} 天 · ${who()}${gen}`));
     }
     const recDays = passed.filter(p => p.list.length).length;
     const freeM = passed.reduce((a, p) => a + 1440 - p.used, 0);
     const avg = passed.length ? Math.round(used / passed.length) : 0;
     const kp = el('div', 'kpis'); doc.appendChild(kp);
-    kpi(kp, '总记录时长', String(Math.floor(used / 60)), `小时 ${pad(used % 60)} 分`, delta(used, prev.used, label));
-    kpi(kp, '日均', passed.length ? hmDur(avg) : '—', '', passed.length ? `按已过的 ${passed.length} 天计` : '还没开始');
-    kpi(kp, '有记录天数', String(recDays), ` / ${passed.length} 天`, passed.length - recDays ? `${passed.length - recDays} 天没有记录` : '每天都有记录');
-    kpi(kp, '空余时间', String(Math.floor(freeM / 60)), `小时 ${pad(freeM % 60)} 分`, '每天 24 小时 − 记录时长');
+    kpi(kp, TX('总记录时长', 'Total logged'), String(Math.floor(used / 60)), TX(`小时 ${pad(used % 60)} 分`, `h ${pad(used % 60)}m`), delta(used, prev.used, label));
+    kpi(kp, TX('日均', 'Daily average'), passed.length ? hmDur(avg) : '—', '', passed.length ? TX(`按已过的 ${passed.length} 天计`, `Over ${plural(passed.length, 'day')} so far`) : TX('还没开始', 'Not started yet'));
+    kpi(kp, TX('有记录天数', 'Days logged'), String(recDays), TX(` / ${passed.length} 天`, ` / ${passed.length}`), passed.length - recDays ? TX(`${passed.length - recDays} 天没有记录`, `${plural(passed.length - recDays, 'day')} with no records`) : TX('每天都有记录', 'Logged every day'));
+    kpi(kp, TX('空余时间', 'Free time'), String(Math.floor(freeM / 60)), TX(`小时 ${pad(freeM % 60)} 分`, `h ${pad(freeM % 60)}m`), TX('每天 24 小时 − 记录时长', '24 h a day − logged'));
 
-    const s1 = section(doc, '每日用时', '按类别堆叠 · 点柱子看当天');
+    const s1 = section(doc, TX('每日用时', 'Daily time'), TX('按类别堆叠 · 点柱子看当天', 'Stacked by category · click a bar to open that day'));
     const cb = el('div', 'chart'); s1.appendChild(cb); barChart(cb, per, today);
     const lg = el('div', 'legend'); for (const c of catsSorted.slice().sort((a, b) => catOrder(a) - catOrder(b))) { const sp = el('span'); sp.append(swatch(c), c); lg.appendChild(sp); } s1.appendChild(lg);
 
     const share = shareSection(doc, byCat, passed.length, passed.flatMap(p => p.list));
     const two = el('div', 'two'); doc.appendChild(two);
-    const sa = section(two, '类别分布'); catBars(sa, byCat);
-    const sb = section(two, '小结'); const notes = [];
+    const sa = section(two, TX('类别分布', 'By category')); catBars(sa, byCat);
+    const sb = section(two, TX('小结', 'Summary')); const notes = [];
     if (all.length) {
+      const best = passed.reduce((a, p) => (p.used > (a ? a.used : 0) ? p : a), null);
+      if (EN) {
+        notes.push([`Logged `, { b: hmDur(used) }, ` ${isWeek ? 'this week' : 'this month'}, ${delta(used, prev.used, label)}.`]);
+        if (passed.length) notes.push(['Logged time is ', { b: `${Math.round(share * 100)}%` }, ` of all the time in the days so far, about ${Math.round(share * 100)}% of each day on average.`]);
+        if (best) notes.push(['Busiest day: ', { b: `${wk(best.k)} ${md(best.k)}` }, `, ${hmDur(best.used)}.`]);
+        if (catsSorted[0]) notes.push(['Top category: ', { b: catsSorted[0] }, ` (${Math.round(byCat[catsSorted[0]] / totMs * 100)}%)` + (catsSorted[1] ? `, then ${catsSorted[1]} (${Math.round(byCat[catsSorted[1]] / totMs * 100)}%).` : '.')]);
+        notes.push([`Of the ${plural(passed.length, 'day')} so far, `, { b: plural(recDays, 'day') }, (recDays === 1 ? ' has' : ' have') + ' records' + (passed.length - recDays ? `; ${passed.length - recDays} ${passed.length - recDays === 1 ? 'has' : 'have'} none.` : '.')]);
+        if (longest) notes.push(['Longest entry: ', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `, ${hmDur(mins(longest.end - longest.start))} (started ${md(keyOf(longest.start))} ${hm(longest.start)}).`]);
+      } else {
       notes.push([`${isWeek ? '本周' : '本月'}共记录 `, { b: hmDur(used) }, `，${delta(used, prev.used, label)}。`]);
       if (passed.length) notes.push(['记录的时间占已过天数全部时间的 ', { b: `${Math.round(share * 100)}%` }, `，平均每天用掉一天的 ${Math.round(share * 100)}%。`]);
-      const best = passed.reduce((a, p) => (p.used > (a ? a.used : 0) ? p : a), null);
       if (best) notes.push(['投入最多的一天是 ', { b: `${md(best.k)} ${wk(best.k)}` }, `，共 ${hmDur(best.used)}。`]);
       if (catsSorted[0]) notes.push(['用时最多的类别是 ', { b: catsSorted[0] }, `（${Math.round(byCat[catsSorted[0]] / totMs * 100)}%）` + (catsSorted[1] ? `，其次是 ${catsSorted[1]}（${Math.round(byCat[catsSorted[1]] / totMs * 100)}%）。` : '。')]);
       notes.push([`已过的 ${passed.length} 天里，有 `, { b: `${recDays} 天` }, ' 有记录' + (passed.length - recDays ? `，${passed.length - recDays} 天没有记录。` : '。')]);
       if (longest) notes.push(['最长的一段：', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `，${hmDur(mins(longest.end - longest.start))}（${md(keyOf(longest.start))} ${hm(longest.start)} 开始）。`]);
+      }
     }
     notesList(sb, notes);
 
-    const sc = section(doc, '每日明细', '点任意一天看当天记录');
+    const sc = section(doc, TX('每日明细', 'Daily details'), TX('点任意一天看当天记录', 'Click any day to see its entries'));
     const wrap = el('div', 'tblwrap'); const t = el('table', 'tbl'); const hr = el('tr');
-    [['日期'], ['最早开始'], ['最晚结束'], ['段数', 'r'], ['主要类别'], ['记录时长', 'r'], ['空余', 'r']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
+    [[TX('日期', 'Date')], [TX('最早开始', 'First in')], [TX('最晚结束', 'Last out')], [TX('段数', 'Entries'), 'r'], [TX('主要类别', 'Top category')], [TX('记录时长', 'Logged'), 'r'], [TX('空余', 'Free'), 'r']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
     const th = el('thead'); th.appendChild(hr); t.appendChild(th); const tb = el('tbody');
     for (const p of per) {
       const fut = p.k > today;
@@ -1183,10 +1249,10 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       tr.appendChild(el('td', null, `${md(p.k)} ${wk(p.k)}`));
       const f = p.list[0], l = p.list[p.list.length - 1];
       tr.appendChild(el('td', f ? null : 'muted', f ? hm(f.start) : '—'));
-      tr.appendChild(el('td', l ? (l.live ? 'muted' : null) : 'muted', l ? (l.live ? '进行中' : hm(l.end)) : '—'));
+      tr.appendChild(el('td', l ? (l.live ? 'muted' : null) : 'muted', l ? (l.live ? TX('进行中', 'Running') : hm(l.end)) : '—'));
       tr.appendChild(el('td', 'r', p.list.length ? String(p.list.length) : (fut ? '' : '0')));
       const top = Object.keys(p.by).sort((a, b) => p.by[b] - p.by[a]);
-      const tk = el('td', 'cattd'); if (top.length) tk.append(swatch(top[0]), top[0] + (top.length > 1 ? ` 等 ${top.length} 类` : '')); else { tk.className = 'muted'; tk.textContent = '—'; }
+      const tk = el('td', 'cattd'); if (top.length) tk.append(swatch(top[0]), top[0] + (top.length > 1 ? TX(` 等 ${top.length} 类`, ` +${top.length - 1}`) : '')); else { tk.className = 'muted'; tk.textContent = '—'; }
       tr.appendChild(tk);
       tr.appendChild(el('td', 'r', fut ? '' : hmDur(p.used)));
       tr.appendChild(el('td', 'r', fut ? '' : hmDur(1440 - p.used)));
@@ -1195,12 +1261,12 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       tb.appendChild(tr);
     }
     t.appendChild(tb);
-    const tf = el('tfoot'); const fr = el('tr'); const c1 = el('td', null, '合计'); c1.colSpan = 3; fr.appendChild(c1);
+    const tf = el('tfoot'); const fr = el('tr'); const c1 = el('td', null, TX('合计', 'Total')); c1.colSpan = 3; fr.appendChild(c1);
     fr.appendChild(el('td', 'r', String(all.length)));
     fr.appendChild(el('td', 'sumtasks', catsSorted.slice(0, 3).map(x => `${x} ${hmDur(mins(byCat[x]))}`).join('　') || '—'));
     fr.appendChild(el('td', 'r', hmDur(used))); fr.appendChild(el('td', 'r', hmDur(freeM)));
     tf.appendChild(fr); t.appendChild(tf); wrap.appendChild(t); sc.appendChild(wrap);
-    $('#footNote').textContent = loading ? '正在读取记录…' : '空余按已过的天数计算：每天 24 小时 − 记录时长';
+    $('#footNote').textContent = loading ? TX('正在读取记录…', 'Loading records…') : TX('空余按已过的天数计算：每天 24 小时 − 记录时长', 'Free time counts days so far: 24 h a day − logged');
     v.scrollTop = scrollTop;
   }
 
@@ -1215,7 +1281,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const keys = keysFor(state.viewDate, view);
     if (view === 'day') return { kind: '日报', en: 'daily-report', file: keys[0], range: keys[0].replace(/-/g, '/') + ' ' + wk(keys[0]), keys };
     if (view === 'week') return { kind: '周报', en: 'weekly-report', file: `${keys[0]}_to_${keys[6].slice(5)}`, range: `${keys[0].replace(/-/g, '/')} – ${keys[6].slice(5).replace('-', '/')}`, keys };
-    return { kind: '月报', en: 'monthly-report', file: keys[0].slice(0, 7), range: `${keys[0].slice(0, 4)} 年 ${Number(keys[0].slice(5, 7))} 月`, keys };
+    return { kind: '月报', en: 'monthly-report', file: keys[0].slice(0, 7), range: EN ? `${MONL[Number(keys[0].slice(5, 7)) - 1]} ${keys[0].slice(0, 4)}` : `${keys[0].slice(0, 4)} 年 ${Number(keys[0].slice(5, 7))} 月`, keys };
   }
   // Inline every colour the stylesheet would give the SVG charts, since html2canvas draws SVG as a standalone image.
   function freezeColours(root) {
@@ -1252,7 +1318,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   }
   async function exportPdf(btn, build, filename, pageWmm, pageHmm) {
     if (exporting || (window.claude && !downloadsApi)) return;
-    exporting = true; const label = btn.textContent; btn.textContent = '正在生成…'; btn.disabled = true;
+    exporting = true; const label = btn.textContent; btn.textContent = TX('正在生成…', 'Generating…'); btn.disabled = true;
     let box = null;
     try {
       await ensureLibs();
@@ -1262,13 +1328,13 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       const blob = new Blob([await renderPdf(box, pageWmm, pageHmm)], { type: 'application/pdf' });
       if (downloadsApi) await downloadsApi.save({ filename, data: blob });
       else { const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; a.style.display = 'none'; document.body.appendChild(a); a.click(); setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 30000); }
-      toast('已导出 ' + filename);
+      toast(TX('已导出 ', 'Exported ') + filename);
     } catch (e) {
       const c = e && e.code;
       if (c === 'declined') {}
-      else if (c === 'rate_limited') toast('上一个保存窗口还没关闭，稍后再试');
-      else if (e && e.message === 'load') toast('导出组件加载失败，请检查网络后再试');
-      else toast('导出没有成功，请稍后再试');
+      else if (c === 'rate_limited') toast(TX('上一个保存窗口还没关闭，稍后再试', 'The previous save dialog is still open, try again shortly'));
+      else if (e && e.message === 'load') toast(TX('导出组件加载失败，请检查网络后再试', 'Couldn’t load the export tools. Check your connection and try again'));
+      else toast(TX('导出没有成功，请稍后再试', 'Export failed, please try again later'));
     } finally {
       if (box) box.remove();
       exporting = false; btn.disabled = false; btn.textContent = label; renderSheet();
@@ -1278,7 +1344,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const box = el('div', 'exportbox xl');
     const doc = $('#view .doc').cloneNode(true);
     doc.querySelectorAll('.lnk, .tip').forEach(n => n.remove());
-    const f = el('div', 'xfoot'); f.append(el('span', null, '插卡打卡钟 · 时间报告'), el('span', null, '空余 = 24 小时 − 记录时长')); doc.appendChild(f);
+    const f = el('div', 'xfoot'); f.append(el('span', null, TX('插卡打卡钟 · 时间报告', 'Punch Clock · Time Report')), el('span', null, TX('空余 = 24 小时 − 记录时长', 'Free = 24 h − logged'))); doc.appendChild(f);
     box.appendChild(doc);
     // charts were laid out at the panel width; scale them to the page by width attribute after insertion
     return box;
@@ -1287,20 +1353,20 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const P = periodName(); const today = keyOf(Date.now());
     const box = el('div', 'exportbox xl'); box.style.width = '600px'; box.style.padding = '24px';
     const c = el('div', 'xcard'); box.appendChild(c);
-    const b = el('div', 'xb'); b.append(el('span', null, 'TIME CARD'), el('b', null, '考勤卡')); c.appendChild(b);
+    const b = el('div', 'xb'); b.append(el('span', null, 'TIME CARD'), el('b', null, TX('考勤卡', 'IN · OUT'))); c.appendChild(b);
     const m = el('div', 'xm');
-    m.append(el('span', null, 'NO.'), el('span', 'no', state.cardNo || '—'), el('span', null, '姓名'), el('span', 'v', state.name || ''));
-    const pr = el('div', 'p'); pr.append(el('span', null, P.kind === '日报' ? '日期' : '期间'), el('span', 'v', P.range)); m.appendChild(pr);
+    m.append(el('span', null, 'NO.'), el('span', 'no', state.cardNo || '—'), el('span', null, TX('姓名', 'Name')), el('span', 'v', state.name || ''));
+    const pr = el('div', 'p'); pr.append(el('span', null, view === 'day' ? TX('日期', 'Date') : TX('期间', 'Period')), el('span', 'v', P.range)); m.appendChild(pr);
     c.appendChild(m);
-    c.appendChild(el('h4', null, '考 勤 卡'));
+    c.appendChild(el('h4', null, TX('考 勤 卡', 'TIME CARD')));
     const t = el('table'); const cg = el('colgroup');
     ['17%', '13%', '31%', '13%', '13%', '13%'].forEach(w => { const col = el('col'); col.style.width = w; cg.appendChild(col); }); t.appendChild(cg);
-    const hr = el('tr'); ['日期', '类别', '事项', '开始', '结束', '用时'].forEach(x => hr.appendChild(el('th', null, x))); const th = el('thead'); th.appendChild(hr); t.appendChild(th);
+    const hr = el('tr'); (EN ? ['Date', 'Category', 'Task', 'In', 'Out', 'Time'] : ['日期', '类别', '事项', '开始', '结束', '用时']).forEach(x => hr.appendChild(el('th', null, x))); const th = el('thead'); th.appendChild(hr); t.appendChild(th);
     const tb = el('tbody'); let total = 0, count = 0;
     const days = P.keys.filter(k => view !== 'month' || k <= today || dayEntries(k).length);
     for (const k of days) {
       const list = dayEntries(k);
-      if (!list.length) { if (view === 'day') { const tr = el('tr'); const td = el('td', 'd', '这一天没有记录'); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); } else { const tr = el('tr'); tr.appendChild(el('td', 'd', `${md(k)} ${wk(k)}`)); for (let i = 0; i < 5; i++) tr.appendChild(el('td')); tb.appendChild(tr); } continue; }
+      if (!list.length) { if (view === 'day') { const tr = el('tr'); const td = el('td', 'd', TX('这一天没有记录', 'No records this day')); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); } else { const tr = el('tr'); tr.appendChild(el('td', 'd', `${md(k)} ${wk(k)}`)); for (let i = 0; i < 5; i++) tr.appendChild(el('td')); tb.appendChild(tr); } continue; }
       list.forEach((e, i) => {
         const tr = el('tr'); total += e.end - e.start; count++;
         tr.appendChild(el('td', 'd', i ? '' : `${md(k)} ${wk(k)}`));
@@ -1317,11 +1383,11 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const passedN = Math.max(1, P.keys.filter(k => k <= today).length);
     const usedM = mins(total);
     const fbar = el('div', 'xf');
-    const s1 = el('span', null, '合计'); s1.appendChild(el('b', null, durShort(usedM)));
-    const s2 = el('span', null, '段数'); s2.appendChild(el('b', null, String(count)));
-    const s3 = el('span', null, '空余'); s3.appendChild(el('b', null, durShort(Math.max(0, 1440 * passedN - usedM))));
+    const s1 = el('span', null, TX('合计', 'Total')); s1.appendChild(el('b', null, durShort(usedM)));
+    const s2 = el('span', null, TX('段数', 'Entries')); s2.appendChild(el('b', null, String(count)));
+    const s3 = el('span', null, TX('空余', 'Free')); s3.appendChild(el('b', null, durShort(Math.max(0, 1440 * passedN - usedM))));
     fbar.append(s1, s2, s3); c.appendChild(fbar);
-    const now = new Date(); const xs = el('div', 'xs'); xs.append(el('span', null, `打印于 ${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())} ${hm(now)}`), el('span', null, 'PUNCH-24 专用卡')); c.appendChild(xs);
+    const now = new Date(); const xs = el('div', 'xs'); xs.append(el('span', null, `${TX('打印于', 'Printed')} ${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())} ${hm(now)}`), el('span', null, TX('PUNCH-24 专用卡', 'PUNCH-24 CARD'))); c.appendChild(xs);
     return box;
   }
   $('#expReport').addEventListener('click', e => { const P = periodName(); exportPdf(e.currentTarget, buildReport, `${P.en}_${P.file}.pdf`, 210, 297); track('export-report-' + view); });
@@ -1384,7 +1450,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const e = id ? (state.days[k] || []).find(x => x.id === id) : null;
     if (id && !e) return;
     editing = { k, id };
-    $('#dTitle').textContent = (id ? '修改这一段 · ' : '补记一段 · ') + k;
+    $('#dTitle').textContent = (id ? TX('修改这一段 · ', 'Edit entry · ') : TX('补记一段 · ', 'Add entry · ')) + k;
     const sel = $('#eCat'); sel.textContent = '';
     const opts = state.cats.slice(); const cur = e ? e.cat : (state.cats.includes(selCat) ? selCat : state.cats[0]); if (!opts.includes(cur)) opts.unshift(cur);
     for (const c of opts) { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); }
@@ -1395,7 +1461,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     $('#eStart').value = hm(e ? e.start : defStart);
     $('#eEnd').value = e ? (e.end === nextMidnight(startOfKey(k)) ? '00:00' : hm(e.end)) : hm(isToday ? now : defStart + 3600000);
     $('#dErr').textContent = '';
-    const del = $('#dDel'); del.hidden = !id; del.classList.remove('armed'); del.textContent = '删除';
+    const del = $('#dDel'); del.hidden = !id; del.classList.remove('armed'); del.textContent = TX('删除', 'Delete');
     try { dlg.showModal(); } catch (err) { dlg.setAttribute('open', ''); }
     $('#eCat').focus();
   }
@@ -1403,23 +1469,23 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   $('#dCancel').addEventListener('click', closeEdit);
   $('#dDel').addEventListener('click', () => {
     const b = $('#dDel');
-    if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = '确认删除'; return; }
+    if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = TX('确认删除', 'Confirm delete'); return; }
     const { k, id } = editing; state.days[k] = (state.days[k] || []).filter(x => x.id !== id);
-    closeEdit(); render(); saveDay(k); toast('已删除这一段');
+    closeEdit(); render(); saveDay(k); toast(TX('已删除这一段', 'Entry deleted'));
   });
   $('#dForm').addEventListener('submit', ev => {
     ev.preventDefault(); if (!editing) return;
     const { k, id } = editing; const cat = $('#eCat').value; const task = $('#eTask').value.trim() || cat;
-    if (!cat) { $('#dErr').textContent = '请选择类别。'; return; }
-    if (!$('#eStart').value || !$('#eEnd').value) { $('#dErr').textContent = '请填写开始和结束时间。'; return; }
+    if (!cat) { $('#dErr').textContent = TX('请选择类别。', 'Please choose a category.'); return; }
+    if (!$('#eStart').value || !$('#eEnd').value) { $('#dErr').textContent = TX('请填写开始和结束时间。', 'Please fill in the start and end times.'); return; }
     const toMs = v => { const [h, m] = v.split(':').map(Number); return startOfKey(k) + (h * 60 + m) * 60000; };
     const start = toMs($('#eStart').value);
     const end = $('#eEnd').value === '00:00' ? nextMidnight(startOfKey(k)) : toMs($('#eEnd').value);
-    if (end <= start) { $('#dErr').textContent = '结束时间要晚于开始时间（跨午夜请分两天记）。'; return; }
+    if (end <= start) { $('#dErr').textContent = TX('结束时间要晚于开始时间（跨午夜请分两天记）。', 'End must be after start (split entries that cross midnight into two days).'); return; }
     const list = state.days[k] = state.days[k] || [];
     const rec = { id: id || newId(), cat, task, desc: $('#eDesc').value.trim(), start, end };
     const i = list.findIndex(x => x.id === id); if (i >= 0) list[i] = rec; else list.push(rec);
-    closeEdit(); render(); saveDay(k); toast(id ? '已保存修改' : '已补记'); track(id ? 'entry-edit' : 'entry-add');
+    closeEdit(); render(); saveDay(k); toast(id ? TX('已保存修改', 'Changes saved') : TX('已补记', 'Entry added')); track(id ? 'entry-edit' : 'entry-add');
   });
 
   /* ── anonymous usage stats (GoatCounter): only event names, never record content ── */
@@ -1437,13 +1503,13 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     a.href = url; a.download = `punch-clock-backup_${keyOf(Date.now())}.json`; a.style.display = 'none';
     document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
     const n = Object.values(state.days).reduce((t, l) => t + l.length, 0);
-    toast(`已导出备份：${n} 条记录`); track('backup-export');
+    toast(TX(`已导出备份：${n} 条记录`, `Backup saved: ${plural(n, 'record')}`)); track('backup-export');
   });
   $('#bakIn').addEventListener('click', () => { if (state.mode === 'local') $('#bakFile').click(); });
   $('#bakFile').addEventListener('change', async e => {
     const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
-    let raw; try { raw = JSON.parse(await f.text()); } catch (err) { toast('这个文件不是有效的备份'); return; }
-    if (!raw || typeof raw !== 'object' || !raw.days || typeof raw.days !== 'object') { toast('这个文件不是有效的备份'); return; }
+    let raw; try { raw = JSON.parse(await f.text()); } catch (err) { toast(TX('这个文件不是有效的备份', 'This file isn’t a valid backup')); return; }
+    if (!raw || typeof raw !== 'object' || !raw.days || typeof raw.days !== 'object') { toast(TX('这个文件不是有效的备份', 'This file isn’t a valid backup')); return; }
     let added = 0;
     for (const k in raw.days) {
       if (!/^\d{4}-\d\d-\d\d$/.test(k)) continue;
@@ -1457,7 +1523,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (!state.cardNo) { state.cardNo = str(raw.cardNo, 6).trim(); $('#cNo').value = state.cardNo; }
     if (!state.name) { state.name = str(raw.name, 12).trim(); $('#cName').value = state.name; }
     saveLocal(); render();
-    toast(added ? `已恢复 ${added} 条记录` : '备份里的记录本机都已经有了'); track('backup-import');
+    toast(added ? TX(`已恢复 ${added} 条记录`, `Restored ${plural(added, 'record')}`) : TX('备份里的记录本机都已经有了', 'Everything in this backup is already here')); track('backup-import');
   });
 
   setY(OUT);
