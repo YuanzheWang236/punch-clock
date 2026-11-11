@@ -71,7 +71,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .who { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
 .who img { width: 24px; height: 24px; border-radius: 50%; }
 .who .mode { padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 12px; }
-.ghost { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer; color: var(--muted); font-size: 13px; }
+.ghost { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.who .mode { white-space: nowrap; }
+@media (max-width: 560px) { .who { flex-wrap: wrap; gap: 6px; } .who .mode { display: none; } .ghost { padding: 3px 8px; } }
 .ghost:hover { color: var(--fg); }
 a.ghost { text-decoration: none; }
 .copy { flex: none; text-align: center; font-size: 12px; color: var(--muted); padding: 0 16px 4px; }
@@ -549,6 +551,18 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   const DEFAULT_CATS = EN ? ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other'] : ['学习', '工作', '阅读', '运动', '生活', '其他'];
   const cleanCats = a => { const out = []; if (Array.isArray(a)) for (const x of a) { const t = str(x, 12).trim(); if (t && !out.includes(t)) out.push(t); if (out.length >= 16) break; } return out.length ? out : DEFAULT_CATS.slice(); };
   state.cats = DEFAULT_CATS.slice();
+  // The six built-in categories follow the UI language; stored names are renamed (records too). Custom categories are left alone.
+  const OTHER_CATS = EN ? ['学习', '工作', '阅读', '运动', '生活', '其他'] : ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other'];
+  const toLangCat = c => { const i = OTHER_CATS.indexOf(c); return i < 0 ? c : DEFAULT_CATS[i]; };
+  function localizeCats() {
+    let changed = false;
+    const fix = o => { if (!o) return; const oc = o.cat, nc = toLangCat(oc); if (nc !== oc) { changed = true; o.cat = nc; if (o.task === oc) o.task = nc; } };
+    for (const k in state.days) state.days[k].forEach(fix);
+    fix(state.current);
+    const cats = state.cats.map(toLangCat); if (cats.some((c, i) => c !== state.cats[i])) { changed = true; state.cats = cleanCats(cats); }
+    const sc = toLangCat(selCat); if (sc !== selCat) { selCat = sc; try { localStorage.setItem('punch.cat', sc); } catch (e) {} }
+    return changed;
+  }
   let selCat = DEFAULT_CATS[0];
   try { const c = localStorage.getItem('punch.cat'); if (c) selCat = c; } catch (e) {}
   const cleanGoal = g => (typeof g === 'number' && g >= 30 && g <= 1440 ? g : 240);
@@ -662,6 +676,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       state.days = days; applyCurrent(cleanCurrent(raw.current)); state.goal = cleanGoal(raw.goal); state.cats = cleanCats(raw.cats);
       state.cardNo = str(raw.cardNo, 6).trim(); state.name = str(raw.name, 12).trim();
     } catch (e) {}
+    if (localizeCats()) saveLocal();
     $('#whoName').textContent = window.claude ? TX('未登录', 'Not signed in') : ''; $('#cNo').value = state.cardNo; $('#cName').value = state.name;
     const tag = $('#modeTag'); tag.hidden = false; tag.textContent = TX('本机模式', 'Local mode'); $('#bakOut').hidden = $('#bakIn').hidden = false;
     $('#note').textContent = reason; ready();
@@ -671,7 +686,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (window.claude && typeof window.claude.use === 'function') { try { [user, db] = await Promise.all([window.claude.use('user'), window.claude.use('db')]); } catch (e) {}
       window.claude.use('downloads').then(d => { downloadsApi = d; renderSheet(); }).catch(() => {}); }
     const uid = user ? await user.id() : null;
-    if (!db || !uid) { startLocal(window.claude ? TX('未登录 claude.ai：记录只保存在这个浏览器里。登录后打开即可跨设备同步。', 'Not signed in to claude.ai: records stay in this browser. Sign in to sync across devices.') : TX('记录只保存在这个浏览器里，换设备或清除网站数据前请点「备份」。本页只做匿名访问统计，不收集打卡内容。', 'Your records stay in this browser only. Tap “Backup” before switching devices or clearing site data. This page counts anonymous visits only and never collects your entries.')); return; }
+    if (!db || !uid) { startLocal(window.claude ? TX('未登录 claude.ai：记录只保存在这个浏览器里。登录后打开即可跨设备同步。', 'Not signed in to claude.ai: records stay in this browser. Sign in to sync across devices.') : TX('记录只保存在这个浏览器里，换设备或清除网站数据前请点「备份」。本页只做匿名访问统计，不收集打卡内容。', 'Your records stay in this browser only. Tap "Backup" before switching devices or clearing site data. This page counts anonymous visits only and never collects your entries.')); return; }
     const me = await user.me(); const nm = me.name || TX('我', 'Me');
     $('#whoName').textContent = me.name || TX('已登录', 'Signed in'); if (!$('#cName').value) { $('#cName').value = nm; state.name = nm; }
     if (me.avatarUrl) { const a = $('#avatar'); a.src = me.avatarUrl; a.hidden = false; }
@@ -1164,7 +1179,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       }
       notesList(sb, notes);
       const sc = section(doc, TX('记录明细', 'Entries'), p.list.length ? TX(`${p.list.length} 段`, plural(p.list.length, 'entry').replace('entrys', 'entries')) : '');
-      if (!p.list.length) sc.appendChild(el('div', 'empty', loading ? TX('正在读取记录…', 'Loading records…') : k > today ? TX('这一天还没到。', 'This day hasn’t come yet.') : k === today ? TX('今天还没有记录。在左边的卡上选好类别，把卡推进卡槽就开始计时。', 'Nothing logged today. Pick a type on the card at left and push it into the slot to start the clock.') : TX('这一天没有记录。漏记了可以点右下角“补记一段”。', 'No records this day. Forgot to punch? Use “+ Add entry” at the bottom right.')));
+      if (!p.list.length) sc.appendChild(el('div', 'empty', loading ? TX('正在读取记录…', 'Loading records…') : k > today ? TX('这一天还没到。', 'This day hasn’t come yet.') : k === today ? TX('今天还没有记录。在左边的卡上选好类别，把卡推进卡槽就开始计时。', 'Nothing logged today. Pick a type on the card at left and push it into the slot to start the clock.') : TX('这一天没有记录。漏记了可以点右下角“补记一段”。', 'No records this day. Forgot to punch? Use "+ Add entry" at the bottom right.')));
       else {
         const wrap = el('div', 'tblwrap'); const t = el('table', 'tbl'); const hr = el('tr');
         [['#'], [TX('类别', 'Category')], [TX('事项', 'Task')], [TX('说明', 'Note')], [TX('开始', 'Start')], [TX('结束', 'End')], [TX('时长', 'Duration'), 'r'], ['']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
@@ -1519,6 +1534,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       if (list.length) state.days[k] = list.sort((a, b) => a.start - b.start);
     }
     if (Array.isArray(raw.cats)) state.cats = cleanCats(state.cats.concat(raw.cats));
+    localizeCats();
     if (!state.current) { const c = cleanCurrent(raw.current); if (c) applyCurrent(c); }
     if (!state.cardNo) { state.cardNo = str(raw.cardNo, 6).trim(); $('#cNo').value = state.cardNo; }
     if (!state.name) { state.name = str(raw.name, 12).trim(); $('#cName').value = state.name; }
