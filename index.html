@@ -36,7 +36,7 @@
   --pen: #1d3a8c;
   --ok: #2fae5a;
   --warn: #e0412f;
-  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100; --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #9a9a96;
+  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100; --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #9a9a96; --sleep: #89cff0;
   --rp-bg: #ffffff; --rp-head: #f5f6f7; --rp-border: #e4e6ea; --rp-text: #1f2329; --rp-sub: #646a73; --rp-faint: #a8adb4;
   --rp-hover: #f2f5fb; --rp-today: #f0f5ff; --rp-blue: #3370ff; --rp-blue-bg: #e8efff;
   --rp-green: #258a1f; --rp-green-bg: #e8f6e6; --rp-orange: #b86600; --rp-orange-bg: #fdf1e1; --rp-red: #d83931; --rp-red-bg: #fdecea;
@@ -51,9 +51,9 @@ html[lang="en"] .crow .lb { letter-spacing: .02em; }
 html[lang="en"] .cbars.blocks .cbar { grid-template-columns: 9.5em minmax(0, 1fr) auto; }
 html[lang="en"] .cbar { grid-template-columns: 6em minmax(0, 1fr) auto; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --bg: #1b1d20; --fg: #e4e6e8; --muted: #9aa1a8; --line: rgba(228, 230, 232, .14); --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500; --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767; --c-other: #77776f; --rp-bg: #22252a; --rp-head: #2a2e34; --rp-border: #3a3f46; --rp-text: #e6e8eb; --rp-sub: #a2a8b0; --rp-faint: #6c727a; --rp-hover: #2b3140; --rp-today: #26304a; --rp-blue: #6e95ff; --rp-blue-bg: #253257; --rp-green: #6ccf62; --rp-green-bg: #1f3a22; --rp-orange: #f2a540; --rp-orange-bg: #3e2e17; --rp-red: #ff7a72; --rp-red-bg: #45201f; color-scheme: dark; }
+  :root:not([data-theme="light"]) { --bg: #1b1d20; --fg: #e4e6e8; --muted: #9aa1a8; --line: rgba(228, 230, 232, .14); --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500; --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767; --c-other: #77776f; --sleep: #7cc3e6; --rp-bg: #22252a; --rp-head: #2a2e34; --rp-border: #3a3f46; --rp-text: #e6e8eb; --rp-sub: #a2a8b0; --rp-faint: #6c727a; --rp-hover: #2b3140; --rp-today: #26304a; --rp-blue: #6e95ff; --rp-blue-bg: #253257; --rp-green: #6ccf62; --rp-green-bg: #1f3a22; --rp-orange: #f2a540; --rp-orange-bg: #3e2e17; --rp-red: #ff7a72; --rp-red-bg: #45201f; color-scheme: dark; }
 }
-:root[data-theme="dark"] { --bg: #1b1d20; --fg: #e4e6e8; --muted: #9aa1a8; --line: rgba(228, 230, 232, .14); --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500; --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767; --c-other: #77776f; --rp-bg: #22252a; --rp-head: #2a2e34; --rp-border: #3a3f46; --rp-text: #e6e8eb; --rp-sub: #a2a8b0; --rp-faint: #6c727a; --rp-hover: #2b3140; --rp-today: #26304a; --rp-blue: #6e95ff; --rp-blue-bg: #253257; --rp-green: #6ccf62; --rp-green-bg: #1f3a22; --rp-orange: #f2a540; --rp-orange-bg: #3e2e17; --rp-red: #ff7a72; --rp-red-bg: #45201f; color-scheme: dark; }
+:root[data-theme="dark"] { --bg: #1b1d20; --fg: #e4e6e8; --muted: #9aa1a8; --line: rgba(228, 230, 232, .14); --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500; --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767; --c-other: #77776f; --sleep: #7cc3e6; --rp-bg: #22252a; --rp-head: #2a2e34; --rp-border: #3a3f46; --rp-text: #e6e8eb; --rp-sub: #a2a8b0; --rp-faint: #6c727a; --rp-hover: #2b3140; --rp-today: #26304a; --rp-blue: #6e95ff; --rp-blue-bg: #253257; --rp-green: #6ccf62; --rp-green-bg: #1f3a22; --rp-orange: #f2a540; --rp-orange-bg: #3e2e17; --rp-red: #ff7a72; --rp-red-bg: #45201f; color-scheme: dark; }
 
 * { box-sizing: border-box; }
 body {
@@ -236,6 +236,13 @@ a.ghost { text-decoration: none; }
 .sec { margin-top: 22px; min-width: 0; }
 .sec h3 { margin: 0 0 10px; font-size: 14px; font-weight: 700; display: flex; align-items: baseline; gap: 8px; }
 .sec h3 span { font-size: 12px; font-weight: 400; color: var(--rp-sub); }
+.sec h3 { flex-wrap: wrap; }
+.yctl { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 400; color: var(--rp-sub); }
+.sctl { margin-left: auto; }
+.sctl + .yctl { margin-left: 14px; }
+.sctl input { width: auto !important; }
+.yctl input { width: 140px; accent-color: var(--c1); }
+.yctl b { font-weight: 500; color: var(--rp-text); min-width: 4.8em; font-variant-numeric: tabular-nums; }
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
 @media (max-width: 700px) { .two { grid-template-columns: minmax(0, 1fr); gap: 0; } }
 
@@ -317,7 +324,7 @@ a.ghost { text-decoration: none; }
 
 /* ── PDF export (rendered off-screen in light colours) ── */
 .exportbox { position: fixed; left: -12000px; top: 0; width: 794px; z-index: -1; pointer-events: none; background: #ffffff; color: var(--rp-text); font-family: var(--f-body); }
-.exportbox.xl {   --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100; --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #9a9a96;   --rp-bg: #ffffff; --rp-head: #f5f6f7; --rp-border: #e4e6ea; --rp-text: #1f2329; --rp-sub: #646a73; --rp-faint: #a8adb4;   --rp-hover: #f2f5fb; --rp-today: #f0f5ff; --rp-blue: #3370ff; --rp-blue-bg: #e8efff;   --rp-green: #258a1f; --rp-green-bg: #e8f6e6; --rp-orange: #b86600; --rp-orange-bg: #fdf1e1; --rp-red: #d83931; --rp-red-bg: #fdecea;  color-scheme: light; }
+.exportbox.xl {   --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100; --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948; --c-other: #9a9a96; --sleep: #89cff0;   --rp-bg: #ffffff; --rp-head: #f5f6f7; --rp-border: #e4e6ea; --rp-text: #1f2329; --rp-sub: #646a73; --rp-faint: #a8adb4;   --rp-hover: #f2f5fb; --rp-today: #f0f5ff; --rp-blue: #3370ff; --rp-blue-bg: #e8efff;   --rp-green: #258a1f; --rp-green-bg: #e8f6e6; --rp-orange: #b86600; --rp-orange-bg: #fdf1e1; --rp-red: #d83931; --rp-red-bg: #fdecea;  color-scheme: light; }
 .exportbox .doc { max-width: none; padding: 44px 52px 36px; }
 .exportbox .share i.free, .exportbox .cbar .fl.free, .exportbox .sw.free { background: #e4e6ea !important; }
 .exportbox .xfoot { margin-top: 26px; padding-top: 10px; border-top: 1px solid var(--rp-border); font-size: 11px; color: var(--rp-sub); display: flex; justify-content: space-between; }
@@ -367,8 +374,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
-</head>
-<body>
+
 <div class="app">
 <header class="top">
   <div class="brand">插卡打卡钟</div>
@@ -478,7 +484,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     <div class="f"><label for="eDesc">说明</label><textarea id="eDesc" maxlength="200" rows="3"></textarea></div>
     <div class="times">
       <div class="f"><label for="eStart">开始时间</label><input type="time" id="eStart"></div>
-      <div class="f" style="margin-top:0"><label for="eEnd">结束时间（00:00 = 午夜）</label><input type="time" id="eEnd"></div>
+      <div class="f" style="margin-top:0"><label for="eEnd">结束时间（早于开始即为次日）</label><input type="time" id="eEnd"></div>
     </div>
     <div class="err" id="dErr" aria-live="polite"></div>
     <div class="dactions">
@@ -528,7 +534,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     T('#prevP', null, { 'aria-label': 'Previous' }); T('#nextP', null, { 'aria-label': 'Next' }); T('#dayPick', null, { 'aria-label': 'Jump to a date' });
     T('#addBtn', '+ Add entry');
     T('label[for="eCat"]', 'Category'); T('label[for="eTask"]', 'Task (optional)'); T('label[for="eDesc"]', 'Note');
-    T('label[for="eStart"]', 'Start'); T('label[for="eEnd"]', 'End (00:00 = midnight)');
+    T('label[for="eStart"]', 'Start'); T('label[for="eEnd"]', 'End (earlier than start = next day)');
     T('#copyRest', 'All rights reserved. Do not copy without permission.'); T('#dCancel', 'Cancel'); T('#dForm button[type="submit"]', 'Save');
   })();
   const pad = n => String(n).padStart(2, '0');
@@ -548,11 +554,13 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const state = { cardNo: '', name: '', mode: 'loading', days: {}, current: null, viewDate: keyOf(Date.now()), col: null, goal: 240 };
-  const DEFAULT_CATS = EN ? ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other'] : ['学习', '工作', '阅读', '运动', '生活', '其他'];
-  const cleanCats = a => { const out = []; if (Array.isArray(a)) for (const x of a) { const t = str(x, 12).trim(); if (t && !out.includes(t)) out.push(t); if (out.length >= 16) break; } return out.length ? out : DEFAULT_CATS.slice(); };
+  const SLEEP = EN ? 'Sleep' : '睡眠';
+  const isSleep = e => e.cat === SLEEP;
+  const DEFAULT_CATS = EN ? ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other', SLEEP] : ['学习', '工作', '阅读', '运动', '生活', '其他', SLEEP];
+  const cleanCats = a => { const out = []; if (Array.isArray(a)) for (const x of a) { const t = str(x, 12).trim(); if (t && !out.includes(t)) out.push(t); if (out.length >= 16) break; } if (!out.length) return DEFAULT_CATS.slice(); if (!out.includes(SLEEP)) out.push(SLEEP); return out; };
   state.cats = DEFAULT_CATS.slice();
-  // The six built-in categories follow the UI language; stored names are renamed (records too). Custom categories are left alone.
-  const OTHER_CATS = EN ? ['学习', '工作', '阅读', '运动', '生活', '其他'] : ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other'];
+  // The seven built-in categories (incl. sleep) follow the UI language; stored names are renamed (records too). Custom categories are left alone.
+  const OTHER_CATS = EN ? ['学习', '工作', '阅读', '运动', '生活', '其他', '睡眠'] : ['Study', 'Work', 'Reading', 'Exercise', 'Life', 'Other', 'Sleep'];
   const toLangCat = c => { const i = OTHER_CATS.indexOf(c); return i < 0 ? c : DEFAULT_CATS[i]; };
   function localizeCats() {
     let changed = false;
@@ -704,14 +712,34 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       state.days = days;
       if (!busy) applyCurrent(cur);
       if (!snap.metadata.fromCache) { clearTimeout(slow); $('#note').textContent = ''; }
-      if (first) { first = false; ready(); } else render();
+      if (first) { first = false; ready(); } else { try { migrateSleep(); } catch (e) {} render(); }
     }, err => {
       clearTimeout(slow);
       $('#note').textContent = err.code === 'revoked' ? TX('访问权限已变更，当前记录为只读。', 'Access changed; records are now read-only.') : TX('记录库连接中断，刷新页面可重新连接。', 'Lost connection to storage. Refresh to reconnect.');
       if (first) { first = false; ready(); }
     });
   }
-  function ready() { render(); }
+  // Anything called 睡觉 / 午睡 / … — as a category or as the task — is sleep. Runs on every data load; it only writes when something changes.
+  const SLEEP_WORDS = ['睡觉', '睡眠', '午睡', '补觉', '小睡', '睡', 'sleep', 'sleeping', 'nap', 'napping', 'bedtime'];
+  const sleepy = x => SLEEP_WORDS.includes((x || '').trim().toLowerCase());
+  function migrateSleep() {
+    for (const k in state.days) {
+      let ch = false;
+      for (const e of state.days[k]) {
+        if (e.cat === SLEEP || !(sleepy(e.cat) || sleepy(e.task))) continue;
+        if (!e.task || e.task === e.cat) e.task = SLEEP;
+        e.cat = SLEEP; ch = true;
+      }
+      if (ch) saveDay(k);
+    }
+    const c = state.current;
+    if (c && c.cat !== SLEEP && (sleepy(c.cat) || sleepy(c.task))) {
+      state.current = { ...c, cat: SLEEP, task: (!c.task || c.task === c.cat) ? SLEEP : c.task }; saveCurrent();
+    }
+    const cats = state.cats.filter(x => x === SLEEP || !sleepy(x));
+    if (cats.length !== state.cats.length) { state.cats = cats; if (!cats.includes(selCat)) selCat = cats[0]; saveSettings(); }
+  }
+  function ready() { try { mergeSplits(); migrateSleep(); } catch (e) {} render(); }
 
   /* ── card physics ── */
   const card = $('#card');
@@ -802,7 +830,8 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const finish = ok => {
       if (done) return; done = true;
       const t = inp.value.trim(); inp.remove();
-      if (ok && t) { if (!state.cats.includes(t)) { state.cats.push(t); saveSettings(); } pickCat(t); }
+      if (ok && t && sleepy(t)) { pickCat(SLEEP); toast(EN ? `"${t}" is counted as Sleep` : '“' + t + '”已经算在“睡眠”里了'); }
+      else if (ok && t) { if (!state.cats.includes(t)) { state.cats.push(t); saveSettings(); } pickCat(t); }
       renderCats();
     };
     inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); finish(true); } else if (e.key === 'Escape') finish(false); });
@@ -846,12 +875,9 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const cat = cur.cat, task = $('#cTask').value.trim() || cat, desc = $('#cDesc').value.trim();
     if (cardY > OUT_AT) await setY(OUT_AT, 200, 'ease-in');
     jolt(); sndClunk(); sndPrint(); lcdSay(TX('打印中…', 'PRINTING…'));
-    const end = Date.now(); const touched = []; let s = cur.start, lastId = null;
-    while (s < end) {
-      const e = Math.min(end, nextMidnight(s)), k = keyOf(s); lastId = newId();
-      (state.days[k] = state.days[k] || []).push({ id: lastId, cat, task, desc, start: s, end: e });
-      touched.push(k); s = e;
-    }
+    const end = Date.now(); const k0 = keyOf(cur.start); const lastId = newId();
+    (state.days[k0] = state.days[k0] || []).push({ id: lastId, cat, task, desc, start: cur.start, end });
+    const touched = [k0];
     freshId = lastId;
     state.current = null; state.viewDate = keyOf(end);
     $('#ledIn').classList.remove('on'); $('#ledOut').classList.add('on');
@@ -884,15 +910,40 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   $('#cDesc').addEventListener('input', editActive);
 
   /* ── derived ── */
+  // A record is stored once, under the day it started. Each day shows the part of it that falls inside that day.
   function dayEntries(k) {
-    const list = (state.days[k] || []).map(e => ({ ...e }));
+    const s0 = startOfKey(k), s1 = nextMidnight(s0);
+    const list = [];
+    for (let back = 0; back <= 3; back++) {
+      const ok = back ? shiftKey(k, -back) : k;
+      for (const e of (state.days[ok] || [])) {
+        if (e.end <= s0 || e.start >= s1) continue;
+        list.push({ ...e, key: ok, oStart: e.start, oEnd: e.end, start: Math.max(e.start, s0), end: Math.min(e.end, s1), cont: e.start < s0, more: e.end > s1 });
+      }
+    }
     const c = state.current;
     if (c) {
-      const s0 = startOfKey(k), s1 = nextMidnight(s0), now = Date.now();
-      const s = Math.max(c.start, s0), e = Math.min(now, s1);
-      if (e > s || (keyOf(c.start) === k && now >= c.start)) list.push({ id: '__live', cat: c.cat, task: c.task, desc: c.desc, start: s, end: Math.max(e, s), live: true, cont: c.start < s0 });
+      const now = Date.now();
+      const st = Math.max(c.start, s0), en = Math.min(now, s1);
+      if (en > st || (keyOf(c.start) === k && now >= c.start)) list.push({ id: '__live', cat: c.cat, task: c.task, desc: c.desc, start: st, end: Math.max(en, st), oStart: c.start, oEnd: now, live: true, cont: c.start < s0, more: false });
     }
     return list.sort((a, b) => a.start - b.start);
+  }
+  // Older versions cut a record at midnight into two; join those pieces back into one record.
+  function mergeSplits() {
+    const changed = new Set();
+    for (const k of Object.keys(state.days).sort()) {
+      for (const e of (state.days[k] || [])) {
+        for (;;) {
+          if (e.end !== startOfKey(keyOf(e.end))) break;
+          const nk = keyOf(e.end); const arr = state.days[nk] || [];
+          const i = arr.findIndex(f => f !== e && f.start === e.end && f.cat === e.cat && f.task === e.task && f.desc === e.desc);
+          if (i < 0) break;
+          e.end = arr[i].end; arr.splice(i, 1); changed.add(k); changed.add(nk);
+        }
+      }
+    }
+    for (const k of changed) saveDay(k);
   }
 
   /* ── render ── */
@@ -938,12 +989,13 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   const hmDur = m => (m >= 60 ? `${Math.floor(m / 60)}h${pad(m % 60)}m` : `${m}m`);
   const isoWeek = k => { const d = new Date(startOfKey(k)); d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7); const w1 = new Date(d.getFullYear(), 0, 4); return 1 + Math.round(((d - w1) / 86400000 - 3 + (w1.getDay() + 6) % 7) / 7); };
   // Category colour follows the category's position in the user's list (fixed order, never re-ranked).
-  function catColor(c) { const i = state.cats.indexOf(c); return i >= 0 && i < 8 ? `var(--c${i + 1})` : 'var(--c-other)'; }
-  const catOrder = c => { const i = state.cats.indexOf(c); return i < 0 ? 99 : i; };
+  function catColor(c) { if (c === SLEEP) return 'var(--sleep)'; const i = state.cats.filter(x => x !== SLEEP).indexOf(c); return i >= 0 && i < 8 ? `var(--c${i + 1})` : 'var(--c-other)'; }
+  const catOrder = c => { if (c === SLEEP) return -1; const i = state.cats.indexOf(c); return i < 0 ? 99 : i; };
   const swatch = c => { const s = el('span', 'sw'); s.style.background = catColor(c); return s; };
   let view = 'week';
   try { const v = localStorage.getItem('punch.view'); if (['day', 'week', 'month'].includes(v)) view = v; } catch (e) {}
   const saveView = () => { try { localStorage.setItem('punch.view', view); } catch (e) {} };
+  const nameNow = () => state.name || '';
   const who = () => (state.name ? state.name + ' · ' : '');
   let cardSaveT = null;
   function cardInfoChanged() {
@@ -964,9 +1016,32 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (v === 'week') return shiftKey(k, -7);
     const [y, m] = k.split('-').map(Number); return keyOf(new Date(y, m - 2, 1).getTime());
   }
+  // Sleep is kept apart: per day we track doing-things time, sleep time inside the day, and what is left.
+  function nightOf(list, k) {
+    const s0 = startOfKey(k), s1 = nextMidnight(s0);
+    const ns = list.filter(e => isSleep(e) && !e.live && e.oEnd > s0 && e.oEnd <= s1);
+    if (!ns.length) return null;
+    let main = ns[0]; for (const e of ns) if (e.oEnd - e.oStart > main.oEnd - main.oStart) main = e;
+    return { min: mins(ns.reduce((a, e) => a + e.oEnd - e.oStart, 0)), bed: main.oStart, wake: main.oEnd };
+  }
   function stats(keys) {
-    const per = keys.map(k => { const list = dayEntries(k); const by = {}; for (const e of list) by[e.cat] = (by[e.cat] || 0) + (e.end - e.start); return { k, list, by, used: Math.min(1440, mins(list.reduce((a, e) => a + e.end - e.start, 0))) }; });
+    const per = keys.map(k => {
+      const list = dayEntries(k); const by = {}; let sleepMs = 0;
+      for (const e of list) { if (isSleep(e)) sleepMs += e.end - e.start; else by[e.cat] = (by[e.cat] || 0) + (e.end - e.start); }
+      const used = Math.min(1440, mins(Object.values(by).reduce((a, b) => a + b, 0)));
+      const sleep = Math.min(1440 - used, mins(sleepMs));
+      return { k, list, work: list.filter(e => !isSleep(e)), by, sleepMs, used, sleep, free: 1440 - used - sleep, night: nightOf(list, k) };
+    });
     return { per, used: per.reduce((a, p) => a + p.used, 0) };
+  }
+  function sleepSummary(per) {
+    const n = per.map(p => p.night).filter(Boolean);
+    if (!n.length) return null;
+    const tod = t => { const d = new Date(t); return d.getHours() * 60 + d.getMinutes(); };
+    const clock = m => `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+    const bed = (Math.round(n.reduce((a, x) => a + (tod(x.bed) + 720) % 1440, 0) / n.length) + 720) % 1440;
+    const wake = Math.round(n.reduce((a, x) => a + tod(x.wake), 0) / n.length);
+    return { nights: n.length, avg: Math.round(n.reduce((a, x) => a + x.min, 0) / n.length), bed: clock(bed), wake: clock(wake) };
   }
   function openDay(k) { view = 'day'; state.viewDate = k; saveView(); renderSheet(); }
   function delta(cur, prev, label) {
@@ -992,39 +1067,48 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
   }
   const hideTip = box => { const t = box.querySelector('.tip'); if (t) t.hidden = true; };
 
+  // Y-axis ceiling chosen by the viewer: 8–24 hours (24h = the whole day).
+  let yMaxH = 24, showSleep = true;
+  try { showSleep = localStorage.getItem('punch.showSleep') !== '0'; } catch (e) {}
+  try { const v = Number(localStorage.getItem('punch.ymax')); if (v >= 8 && v <= 24) yMaxH = v; } catch (e) {}
   function barChart(box, per, today) {
-    const W = Math.max(280, box.clientWidth || 600), H = 210, L = 40, R = 8, T = 12, B = 34;
-    const maxM = Math.max(60, ...per.map(p => p.used));
-    const step = [1, 2, 3, 4, 6, 8][[1, 2, 3, 4, 6, 8].findIndex(s => maxM / 60 / s <= 5)] || 8;
-    const topH = Math.ceil(maxM / 60 / step) * step, topM = topH * 60;
-    const y = m => T + (1 - m / topM) * (H - T - B);
-    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': TX('每日用时柱状图', 'Daily time bar chart') });
-    for (let h = 0; h <= topH; h += step) {
+    const W = Math.max(280, box.clientWidth || 600), H = 220, L = 40, R = 8, T = 22, B = 34;
+    const topH = yMaxH, topM = topH * 60;
+    const step = topH <= 12 ? 2 : topH <= 16 ? 4 : topH % 6 === 0 ? 6 : 4;
+    const y = m => T + (1 - Math.min(m, topM) / topM) * (H - T - B);
+    const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': TX(`每日用时柱状图，纵轴 0 到 ${topH} 小时`, `Daily time bar chart, axis 0 to ${topH} h`) });
+    const ticks = []; for (let h = 0; h <= topH; h += step) ticks.push(h); if (ticks[ticks.length - 1] !== topH) ticks.push(topH);
+    for (const h of ticks) {
       svg.appendChild(sv('line', { class: h ? 'grid' : 'base', x1: L, x2: W - R, y1: y(h * 60), y2: y(h * 60) }));
       svg.appendChild(sv('text', { class: 'ax', x: L - 8, y: y(h * 60) + 4, 'text-anchor': 'end' }, `${h}h`));
     }
     const n = per.length, band = (W - L - R) / n, bw = Math.max(4, Math.min(34, band * (n > 10 ? 0.66 : 0.5)));
     const every = band < 18 ? 2 : 1;
     per.forEach((p, i) => {
+      const pb = showSleep && p.sleepMs ? Object.assign({ [SLEEP]: p.sleepMs }, p.by) : p.by;
+      const pu = mins(Object.values(pb).reduce((x, z) => x + z, 0));
       const cx = L + band * i + band / 2;
       const hit = sv('rect', { class: 'hit', x: L + band * i, y: T, width: band, height: H - T - B + 1 });
       svg.appendChild(hit);
-      let cum = 0; const cats = Object.keys(p.by).sort((a, b) => catOrder(a) - catOrder(b));
-      cats.forEach((c, j) => {
-        const m = Math.min(p.by[c] / 60000, 1440); const y1 = y(cum + m), y0 = y(cum); cum += m;
-        const top = j === cats.length - 1; const h = Math.max(1, y0 - y1 - (j ? 2 : 0));
+      let cum = 0; const cats = Object.keys(pb).sort((a, b) => catOrder(a) - catOrder(b));
+      const clipped = pu > topM;
+      const segs = []; for (const c of cats) { const m = pb[c] / 60000; const a0 = cum, z0 = Math.min(cum + m, topM); cum += m; if (z0 > a0) segs.push([c, a0, z0]); }
+      segs.forEach(([c, a0, z0], j) => {
+        const y1 = y(z0), y0 = y(a0);
+        const top = j === segs.length - 1 && !clipped; const h = Math.max(1, y0 - y1 - (j ? 2 : 0));
         const yy = y1, x = cx - bw / 2, r = top ? Math.min(4, bw / 2, h) : 0;
         const d = `M${x},${yy + h} V${yy + r} Q${x},${yy} ${x + r},${yy} H${x + bw - r} Q${x + bw},${yy} ${x + bw},${yy + r} V${yy + h} Z`;
         const path = sv('path', { d, fill: catColor(c) }); path.style.pointerEvents = 'none'; svg.appendChild(path);
       });
+      if (clipped) { const t = sv('text', { class: 'ax on', x: cx, y: T - 7, 'text-anchor': 'middle' }, `▲${Math.round(pu / 6) / 10}h`); t.style.pointerEvents = 'none'; svg.appendChild(t); }
       if (i % every === 0 || p.k === today) {
         const lbl = n <= 7 ? [EN ? wk(p.k) : wk(p.k).slice(1), md(p.k)] : [String(Number(p.k.slice(8)))];
         lbl.forEach((t, li) => svg.appendChild(sv('text', { class: 'ax' + (p.k === today ? ' on' : ''), x: cx, y: H - B + 16 + li * 13, 'text-anchor': 'middle' }, t)));
       }
       const enter = () => {
         svg.querySelectorAll('.hit.on').forEach(h => h.classList.remove('on')); hit.classList.add('on');
-        const rows = cats.map(c => [c, mins(p.by[c])]).sort((a, b) => b[1] - a[1]);
-        showTip(box, cx / W * box.clientWidth, y(p.used) / H * H, `${md(p.k)} ${wk(p.k)}${p.k === today ? TX(' · 今天', ' · Today') : ''}`, rows.length ? rows : [], p.used);
+        const rows = cats.map(c => [c, mins(pb[c])]).sort((a, b) => b[1] - a[1]);
+        showTip(box, cx / W * box.clientWidth, y(pu) / H * H, `${md(p.k)} ${wk(p.k)}${p.k === today ? TX(' · 今天', ' · Today') : ''}`, rows.length ? rows : [], pu);
       };
       hit.addEventListener('mouseenter', enter);
       hit.addEventListener('mouseleave', () => { hit.classList.remove('on'); hideTip(box); });
@@ -1069,21 +1153,23 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     parent.appendChild(box);
   }
   // Share of the whole day: each category and the free time as a fraction of 24h × days.
-  function shareSection(doc, byCat, days, entries) {
+  function shareSection(doc, byCat, days, entries, sleepMs) {
     const base = 1440 * Math.max(1, days);
     const sec = section(doc, TX('24 小时占比', '24-hour share'), days > 1 ? TX(`以已过的 ${days} 天 × 24 小时为整体`, `Out of ${days} days × 24 h so far`) : TX('以一天 24 小时为整体', 'Out of one 24-hour day'));
     const cats = Object.keys(byCat).sort((a, b) => catOrder(a) - catOrder(b));
     const usedM = Math.min(base, cats.reduce((a, c) => a + mins(byCat[c]), 0));
-    const freeM = base - usedM;
+    const sleepM = Math.min(base - usedM, mins(sleepMs || 0));
+    const freeM = base - usedM - sleepM;
     const pct = m => (m / base * 100);
     const fmtPct = m => { const v = pct(m); return (v > 0 && v < 1 ? v.toFixed(1) : Math.round(v)) + '%'; };
     const bar = el('div', 'share'); bar.setAttribute('role', 'img');
-    bar.setAttribute('aria-label', TX(`已记录占 ${fmtPct(usedM)}，空余占 ${fmtPct(freeM)}`, `Logged ${fmtPct(usedM)}, free ${fmtPct(freeM)}`));
+    bar.setAttribute('aria-label', TX(`做事占 ${fmtPct(usedM)}，睡眠占 ${fmtPct(sleepM)}，空余占 ${fmtPct(freeM)}`, `Activities ${fmtPct(usedM)}, sleep ${fmtPct(sleepM)}, free ${fmtPct(freeM)}`));
+    if (sleepM) { const i = el('i'); i.style.flex = `${sleepM} 0 0`; i.style.background = catColor(SLEEP); i.title = `${SLEEP} ${hmDur(sleepM)} · ${fmtPct(sleepM)}`; bar.appendChild(i); }
     for (const c of cats) { const m = mins(byCat[c]); if (!m) continue; const i = el('i'); i.style.flex = `${m} 0 0`; i.style.background = catColor(c); i.title = `${c} ${hmDur(m)} · ${TX('占全天', 'of the day')} ${fmtPct(m)}`; bar.appendChild(i); }
     if (freeM) { const i = el('i', 'free'); i.style.flex = `${freeM} 0 0`; i.title = `${TX('空余', 'Free')} ${hmDur(freeM)} · ${fmtPct(freeM)}`; bar.appendChild(i); }
     sec.appendChild(bar);
     const two = el('div', 'two'); sec.appendChild(two);
-    const left = el('div'); left.appendChild(el('p', 'subh', TX(`已记录 ${hmDur(usedM)}，占 ${fmtPct(usedM)}`, `Logged ${hmDur(usedM)}, ${fmtPct(usedM)}`)));
+    const left = el('div'); left.appendChild(el('p', 'subh', TX(`做事 ${hmDur(usedM)}（${fmtPct(usedM)}）· 睡眠 ${hmDur(sleepM)}（${fmtPct(sleepM)}）`, `Activities ${hmDur(usedM)} (${fmtPct(usedM)}) · Sleep ${hmDur(sleepM)} (${fmtPct(sleepM)})`)));
     const rows = el('div', 'cbars');
     const row = (sw, name, m, cls, fillCls, color) => {
       const r = el('div', 'cbar' + (cls ? ' ' + cls : '')); const nm = el('span', 'nm'); nm.append(sw, name);
@@ -1092,6 +1178,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       r.append(nm, tr, vl); return r;
     };
     for (const c of cats.slice().sort((a, b) => byCat[b] - byCat[a])) rows.appendChild(row(swatch(c), c, mins(byCat[c]), '', '', catColor(c)));
+    if (sleepM) rows.appendChild(row(swatch(SLEEP), SLEEP, sleepM, '', '', catColor(SLEEP)));
     rows.appendChild(row(el('span', 'sw free'), TX('空余', 'Free'), freeM, 'freerow', 'free'));
     left.appendChild(rows); two.appendChild(left);
     // Time-of-day blocks: how much of each 6-hour block was recorded.
@@ -1103,7 +1190,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       for (let b = 0; b < 4; b++) { const s0 = d0 + b * 6 * 3600000, s1 = d0 + (b + 1) * 6 * 3600000; const ov = Math.min(e.end, s1) - Math.max(e.start, s0); if (ov > 0) got[b] += ov; }
     }
     const blockBase = 360 * Math.max(1, days);
-    right.appendChild(el('p', 'subh', TX('各时段被用掉的比例', 'Share of each part of the day used')));
+    right.appendChild(el('p', 'subh', TX('各时段做事的比例（不含睡眠）', 'Activity share by part of day (excl. sleep)')));
     const br = el('div', 'cbars blocks');
     names.forEach(([n, h], b) => {
       const m = Math.min(blockBase, mins(got[b])); const r = el('div', 'cbar'); const nm = el('span', 'nm'); nm.append(n); nm.appendChild(el('small', null, h));
@@ -1112,7 +1199,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       r.append(nm, tr, vl); br.appendChild(r);
     });
     right.appendChild(br); two.appendChild(right);
-    return usedM / base;
+    return { work: usedM / base, sleep: sleepM / base, free: freeM / base };
   }
   function notesList(parent, items) {
     if (!items.length) { parent.appendChild(el('div', 'nodata', TX('有了记录之后，这里会自动写出小结。', 'A summary will appear here once you have records.'))); return; }
@@ -1145,37 +1232,35 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
       $('#expCard').textContent = EN ? 'Export time card PDF' : `导出${view === 'day' ? '当天' : view === 'week' ? '本周' : '本月'}打卡卡 PDF`;
     }
     $('#expReport').hidden = $('#expCard').hidden = !(downloadsApi || !window.claude) || loading;
-    let longest = null; for (const e of all) if (!longest || e.end - e.start > longest.end - longest.start) longest = e;
+    const whoTxt = typeof who === 'function' ? who() : (typeof nameNow === 'function' ? nameNow() + ' · ' : '');
+    const H = m => [String(Math.floor(m / 60)), TX(`小时 ${pad(m % 60)} 分`, `h ${pad(m % 60)}m`)];
+    const work = all.filter(e => !isSleep(e));
+    let longest = null; for (const e of work) if (!longest || e.end - e.start > longest.end - longest.start) longest = e;
+    const nameOf = e => (e.task === e.cat ? e.cat : `${e.cat} · ${e.task}`);
 
     if (view === 'day') {
-      const k = state.viewDate, p = per[0];
+      const k = state.viewDate, p = per[0], pp = prev.per[0];
       $('#plabel').textContent = `${k.replace(/-/g, '/')} ${wk(k)}`;
       $('#todayBtn').textContent = TX('今天', 'Today'); $('#todayBtn').hidden = k === today;
-      head.append(el('div', 'kicker', TX('Daily Report · 日报', 'Daily Report')), el('h2', null, EN ? `${wk(k)}, ${MON[Number(k.slice(5, 7)) - 1]} ${Number(k.slice(8))}` : `${Number(k.slice(5, 7))} 月 ${Number(k.slice(8))} 日 ${wk(k)}`), el('div', 'meta', `${who()}${gen}`));
+      head.append(el('div', 'kicker', TX('Daily Report · 日报', 'Daily Report')), el('h2', null, EN ? `${wk(k)}, ${MON[Number(k.slice(5, 7)) - 1]} ${Number(k.slice(8))}` : `${Number(k.slice(5, 7))} 月 ${Number(k.slice(8))} 日 ${wk(k)}`), el('div', 'meta', `${whoTxt}${gen}`));
       const kp = el('div', 'kpis'); doc.appendChild(kp);
-      kpi(kp, TX('记录时长', 'Logged'), String(Math.floor(p.used / 60)), TX(`小时 ${pad(p.used % 60)} 分`, `h ${pad(p.used % 60)}m`), p.list.some(e => e.live) ? TX('含进行中的一段', 'Includes a running entry') : '');
-      kpi(kp, TX('空余时间', 'Free time'), String(Math.floor((1440 - p.used) / 60)), TX(`小时 ${pad((1440 - p.used) % 60)} 分`, `h ${pad((1440 - p.used) % 60)}m`), TX('24 小时 − 记录时长', '24 h − logged'));
-      kpi(kp, TX('记录段数', 'Entries'), String(p.list.length), TX('段', ''), p.list.length ? TX(`${Object.keys(p.by).length} 个类别`, plural(Object.keys(p.by).length, 'category').replace('categorys', 'categories')) : '');
-      kpi(kp, TX('与前一天比', 'vs. previous day'), p.used - prev.used >= 0 ? `+${hmDur(p.used - prev.used)}` : `−${hmDur(prev.used - p.used)}`, '', TX(`前一天 ${hmDur(prev.used)}`, `Previous day ${hmDur(prev.used)}`));
+      kpi(kp, TX('做事时长', 'Activities'), ...H(p.used), p.work.some(e => e.live) ? TX('含进行中的一段', 'Includes a running entry') : (p.used === pp.used ? TX('与前一天持平', 'Same as previous day') : EN ? `${p.used > pp.used ? '▲' : '▼'} ${hmDur(Math.abs(p.used - pp.used))} vs. previous day` : `比前一天${p.used > pp.used ? '多' : '少'} ${hmDur(Math.abs(p.used - pp.used))}`));
+      kpi(kp, SLEEP, p.night ? hmDur(p.night.min) : '—', '', p.night ? TX(`${hm(p.night.bed)} 睡 · ${hm(p.night.wake)} 起`, `${hm(p.night.bed)}–${hm(p.night.wake)}`) : TX('没有这一晚的睡眠记录', 'No sleep logged'));
+      kpi(kp, TX('空余时间', 'Free time'), ...H(p.free), p.sleep ? TX(`24h − 做事 − 当天睡着的 ${hmDur(p.sleep)}`, `Excl. activities & ${hmDur(p.sleep)} sleep`) : TX('24 小时 − 做事 − 睡眠', 'Excl. activities & sleep'));
+      kpi(kp, TX('做事段数', 'Entries'), String(p.work.length), TX('段', ''), p.work.length ? TX(`${Object.keys(p.by).length} 个类别`, plural(Object.keys(p.by).length, 'category').replace('categorys', 'categories')) : '');
       const s1 = section(doc, TX('时间分布', 'Timeline'), TX('0:00 – 24:00，按类别着色', '0:00 – 24:00, colored by category')); const cb = el('div', 'chart'); s1.appendChild(cb); dayChart(cb, k, p.list);
-      const lg = el('div', 'legend'); for (const c of catsSorted) { const sp = el('span'); sp.append(swatch(c), c); lg.appendChild(sp); } s1.appendChild(lg);
-      const dayShare = shareSection(doc, byCat, 1, p.list);
+      const lg = el('div', 'legend'); for (const c of (p.sleepMs ? [SLEEP] : []).concat(catsSorted)) { const sp = el('span'); sp.append(swatch(c), c); lg.appendChild(sp); } s1.appendChild(lg);
+      const sh = shareSection(doc, byCat, 1, p.work, p.sleepMs);
       const two = el('div', 'two'); doc.appendChild(two);
-      const sa = section(two, TX('类别分布', 'By category')); catBars(sa, byCat);
+      const sa = section(two, TX('类别分布', 'By category'), TX('不含睡眠', 'excl. sleep')); catBars(sa, byCat);
       const sb = section(two, TX('小结', 'Summary')); const notes = [];
-      if (p.list.length) {
-        const f = p.list[0], l = p.list[p.list.length - 1];
-        if (EN) {
-          notes.push(['First entry started at ', { b: hm(f.start) }, ', ', l.live ? 'and the last one is still running.' : 'and the last one ended at ', ...(l.live ? [] : [{ b: hm(l.end) }, '.'])]);
-          notes.push(['Logged ', { b: hmDur(p.used) }, ` in total, ${Math.round(dayShare * 100)}% of the day; ${hmDur(1440 - p.used)} free.`]);
-          if (catsSorted[0]) notes.push(['Most time went to ', { b: catsSorted[0] }, ` (${Math.round(byCat[catsSorted[0]] / totMs * 100)}%).`]);
-          if (longest) notes.push(['Longest entry: ', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `, ${hmDur(mins(longest.end - longest.start))}.`]);
-        } else {
-        notes.push(['第一段从 ', { b: hm(f.start) }, ' 开始，', l.live ? '最后一段还在进行中。' : '最后一段在 ', ...(l.live ? [] : [{ b: hm(l.end) }, ' 结束。'])]);
-        notes.push(['共记录 ', { b: hmDur(p.used) }, `，占全天的 ${Math.round(dayShare * 100)}%，空余 ${hmDur(1440 - p.used)}。`]);
-        if (catsSorted[0]) notes.push(['用时最多的是 ', { b: catsSorted[0] }, `，占 ${Math.round(byCat[catsSorted[0]] / totMs * 100)}%。`]);
-        if (longest) notes.push(['最长的一段：', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `，${hmDur(mins(longest.end - longest.start))}。`]);
-        }
+      if (p.night) notes.push(EN ? ['Slept ', { b: hmDur(p.night.min) }, ` last night (${hm(p.night.bed)} – ${hm(p.night.wake)}).`] : ['这一晚睡了 ', { b: hmDur(p.night.min) }, `（${hm(p.night.bed)} – ${hm(p.night.wake)}）。`]);
+      if (p.work.length) {
+        const f = p.work[0], l = p.work[p.work.length - 1];
+        notes.push(EN ? ['First activity started at ', { b: hm(f.oStart) }, ', ', l.live ? 'and the last one is still running.' : 'and the last one ended at ', ...(l.live ? [] : [{ b: hm(l.oEnd) }, '.'])] : ['第一段事从 ', { b: hm(f.oStart) }, ' 开始，', l.live ? '最后一段还在进行中。' : '最后一段在 ', ...(l.live ? [] : [{ b: hm(l.oEnd) }, ' 结束。'])]);
+        notes.push(EN ? ['Activities took ', { b: hmDur(p.used) }, `, ${Math.round(sh.work * 100)}% of the day; sleep ${Math.round(sh.sleep * 100)}%, ${hmDur(p.free)} free.`] : ['共做事 ', { b: hmDur(p.used) }, `，占全天的 ${Math.round(sh.work * 100)}%；睡眠占 ${Math.round(sh.sleep * 100)}%，空余 ${hmDur(p.free)}。`]);
+        if (catsSorted[0]) notes.push(EN ? ['Most time went to ', { b: catsSorted[0] }, ` (${Math.round(byCat[catsSorted[0]] / totMs * 100)}% of activity time).`] : ['用时最多的是 ', { b: catsSorted[0] }, `，占做事时间的 ${Math.round(byCat[catsSorted[0]] / totMs * 100)}%。`]);
+        if (longest) notes.push(EN ? ['Longest entry: ', { b: nameOf(longest) }, `, ${hmDur(mins(longest.end - longest.start))}.`] : ['最长的一段：', { b: nameOf(longest) }, `，${hmDur(mins(longest.end - longest.start))}。`]);
       }
       notesList(sb, notes);
       const sc = section(doc, TX('记录明细', 'Entries'), p.list.length ? TX(`${p.list.length} 段`, plural(p.list.length, 'entry').replace('entrys', 'entries')) : '');
@@ -1190,18 +1275,21 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
           const ct = el('td', 'cattd'); ct.append(swatch(e.cat), e.cat); tr.appendChild(ct);
           const tk = el('td', 'task', e.task === e.cat ? '—' : e.task); if (e.live) tk.appendChild(el('span', 'tag', TX('进行中', 'Running'))); tr.appendChild(tk);
           tr.appendChild(el('td', 'wrap', e.desc || '—'));
-          const ic = el('td', null, hm(e.start)); if (e.cont) ic.appendChild(el('span', 'tag', TX('接前一天', 'from prev. day'))); tr.appendChild(ic);
-          tr.appendChild(el('td', e.live ? 'muted' : null, e.live ? TX('进行中', 'Running') : (e.end === nextMidnight(startOfKey(k)) ? '24:00' : hm(e.end))));
+          const ic = el('td', null, hm(e.oStart)); if (e.cont) ic.appendChild(el('span', 'tag', TX('前一天', 'prev. day'))); tr.appendChild(ic);
+          const oc = el('td', e.live ? 'muted' : null, e.live ? TX('进行中', 'Running') : (e.oEnd === nextMidnight(startOfKey(k)) ? '24:00' : hm(e.oEnd))); if (e.more) oc.appendChild(el('span', 'tag', TX('次日', 'next day'))); tr.appendChild(oc);
           const d = el('td', 'r', hmDur(mins(e.end - e.start))); if (e.live) d.id = 'liveDur'; tr.appendChild(d);
+          if ((e.cont || e.more) && !e.live) { d.appendChild(el('span', 'tag', TX(`本日 · 共 ${hmDur(mins(e.oEnd - e.oStart))}`, `this day · total ${hmDur(mins(e.oEnd - e.oStart))}`))); }
           const op = el('td'); const b = el('button', 'lnk', e.live ? TX('在卡上改', 'Edit on card') : TX('编辑', 'Edit')); b.type = 'button';
-          b.addEventListener('click', () => (e.live ? $('#cDesc').focus() : openEdit(k, e.id))); op.appendChild(b); tr.appendChild(op);
+          b.addEventListener('click', () => (e.live ? $('#cDesc').focus() : openEdit(e.key || k, e.id))); op.appendChild(b); tr.appendChild(op);
           tb.appendChild(tr);
         });
         t.appendChild(tb);
-        const tf = el('tfoot'); const fr = el('tr'); const fl = el('td', null, TX('合计', 'Total')); fl.colSpan = 6; fr.appendChild(fl); fr.appendChild(el('td', 'r', hmDur(p.used))); fr.appendChild(el('td')); tf.appendChild(fr); t.appendChild(tf);
+        const tf = el('tfoot'); const fr = el('tr'); const fl = el('td', null, TX('合计', 'Total')); fl.colSpan = 4; fr.appendChild(fl);
+        const fm = el('td', 'sumtasks', TX(`做事 ${hmDur(p.used)} · 睡眠 ${hmDur(p.sleep)} · 空余 ${hmDur(p.free)}`, `Activities ${hmDur(p.used)} · Sleep ${hmDur(p.sleep)} · Free ${hmDur(p.free)}`)); fm.colSpan = 2; fr.appendChild(fm);
+        fr.appendChild(el('td', 'r', hmDur(p.used + p.sleep))); fr.appendChild(el('td')); tf.appendChild(fr); t.appendChild(tf);
         wrap.appendChild(t); sc.appendChild(wrap);
       }
-      $('#footNote').textContent = TX('空余 = 24 小时 − 当天已记录时长', 'Free = 24 h − time logged that day');
+      $('#footNote').textContent = TX('睡眠时长按醒来那天算一晚；空余按当天 0–24 点里实际睡着的部分算', 'Sleep counts on the day you wake up');
       v.scrollTop = scrollTop; return;
     }
 
@@ -1211,77 +1299,89 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (isWeek) {
       $('#plabel').textContent = `${md(keys[0])} – ${md(keys[6])}`;
       $('#todayBtn').textContent = TX('本周', 'This week'); $('#todayBtn').hidden = keys.includes(today);
-      head.append(el('div', 'kicker', TX('Weekly Report · 周报', 'Weekly Report')), el('h2', null, EN ? `Week ${isoWeek(keys[0])}, ${new Date(startOfKey(keys[3])).getFullYear()}` : `${new Date(startOfKey(keys[3])).getFullYear()} 年第 ${isoWeek(keys[0])} 周`), el('div', 'meta', `${md(keys[0])} ${wk(keys[0])} – ${md(keys[6])} ${wk(keys[6])} · ${who()}${gen}`));
+      head.append(el('div', 'kicker', TX('Weekly Report · 周报', 'Weekly Report')), el('h2', null, EN ? `Week ${isoWeek(keys[0])}, ${new Date(startOfKey(keys[3])).getFullYear()}` : `${new Date(startOfKey(keys[3])).getFullYear()} 年第 ${isoWeek(keys[0])} 周`), el('div', 'meta', `${md(keys[0])} ${wk(keys[0])} – ${md(keys[6])} ${wk(keys[6])} · ${whoTxt}${gen}`));
     } else {
       $('#plabel').textContent = EN ? `${MON[mm - 1]} ${yy}` : `${yy} 年 ${mm} 月`;
       $('#todayBtn').textContent = TX('本月', 'This month'); $('#todayBtn').hidden = today.slice(0, 7) === state.viewDate.slice(0, 7);
-      head.append(el('div', 'kicker', TX('Monthly Report · 月报', 'Monthly Report')), el('h2', null, EN ? `${MONL[mm - 1]} ${yy}` : `${yy} 年 ${mm} 月`), el('div', 'meta', EN ? `${md(keys[0])} – ${md(keys[keys.length - 1])}, ${keys.length} days · ${who()}${gen}` : `${md(keys[0])} – ${md(keys[keys.length - 1])}，共 ${keys.length} 天 · ${who()}${gen}`));
+      head.append(el('div', 'kicker', TX('Monthly Report · 月报', 'Monthly Report')), el('h2', null, EN ? `${MONL[mm - 1]} ${yy}` : `${yy} 年 ${mm} 月`), el('div', 'meta', EN ? `${md(keys[0])} – ${md(keys[keys.length - 1])}, ${keys.length} days · ${whoTxt}${gen}` : `${md(keys[0])} – ${md(keys[keys.length - 1])}，共 ${keys.length} 天 · ${whoTxt}${gen}`));
     }
-    const recDays = passed.filter(p => p.list.length).length;
-    const freeM = passed.reduce((a, p) => a + 1440 - p.used, 0);
+    const recDays = passed.filter(p => p.work.length).length;
+    const freeM = passed.reduce((a, p) => a + p.free, 0);
     const avg = passed.length ? Math.round(used / passed.length) : 0;
+    const ss = sleepSummary(per), pss = sleepSummary(prev.per);
     const kp = el('div', 'kpis'); doc.appendChild(kp);
-    kpi(kp, TX('总记录时长', 'Total logged'), String(Math.floor(used / 60)), TX(`小时 ${pad(used % 60)} 分`, `h ${pad(used % 60)}m`), delta(used, prev.used, label));
-    kpi(kp, TX('日均', 'Daily average'), passed.length ? hmDur(avg) : '—', '', passed.length ? TX(`按已过的 ${passed.length} 天计`, `Over ${plural(passed.length, 'day')} so far`) : TX('还没开始', 'Not started yet'));
-    kpi(kp, TX('有记录天数', 'Days logged'), String(recDays), TX(` / ${passed.length} 天`, ` / ${passed.length}`), passed.length - recDays ? TX(`${passed.length - recDays} 天没有记录`, `${plural(passed.length - recDays, 'day')} with no records`) : TX('每天都有记录', 'Logged every day'));
-    kpi(kp, TX('空余时间', 'Free time'), String(Math.floor(freeM / 60)), TX(`小时 ${pad(freeM % 60)} 分`, `h ${pad(freeM % 60)}m`), TX('每天 24 小时 − 记录时长', '24 h a day − logged'));
+    kpi(kp, TX('做事时长', 'Activities'), ...H(used), delta(used, prev.used, label));
+    kpi(kp, TX('日均做事', 'Daily average'), passed.length ? hmDur(avg) : '—', '', passed.length ? TX(`按已过的 ${passed.length} 天计`, `Over ${plural(passed.length, 'day')} so far`) : TX('还没开始', 'Not started yet'));
+    kpi(kp, TX('平均睡眠', 'Avg. sleep'), ss ? hmDur(ss.avg) : '—', '', ss ? TX(`${ss.bed} 睡 · ${ss.wake} 起 · ${ss.nights} 晚`, `${ss.bed}–${ss.wake} · ${plural(ss.nights, 'night')}`) : TX('还没有睡眠记录', 'No sleep logged yet'));
+    kpi(kp, TX('空余时间', 'Free time'), ...H(freeM), TX('每天 24 小时 − 做事 − 睡眠', 'Excl. activities & sleep'));
 
     const s1 = section(doc, TX('每日用时', 'Daily time'), TX('按类别堆叠 · 点柱子看当天', 'Stacked by category · click a bar to open that day'));
-    const cb = el('div', 'chart'); s1.appendChild(cb); barChart(cb, per, today);
-    const lg = el('div', 'legend'); for (const c of catsSorted.slice().sort((a, b) => catOrder(a) - catOrder(b))) { const sp = el('span'); sp.append(swatch(c), c); lg.appendChild(sp); } s1.appendChild(lg);
+    const cb = el('div', 'chart');
+    const redraw = () => { cb.querySelectorAll('svg').forEach(n => n.remove()); hideTip(cb); barChart(cb, per, today); paintLegend(); };
+    const sc0 = el('label', 'yctl sctl'); const ck = el('input'); ck.type = 'checkbox'; ck.id = 'showSleep'; ck.checked = showSleep; sc0.append(ck, TX('含睡眠', 'Show sleep'));
+    ck.addEventListener('change', () => { showSleep = ck.checked; try { localStorage.setItem('punch.showSleep', showSleep ? '1' : '0'); } catch (e) {} redraw(); });
+    const yc = el('label', 'yctl'); yc.htmlFor = 'ymax'; yc.append(TX('纵轴上限', 'Axis max'));
+    const yr = el('input'); yr.type = 'range'; yr.id = 'ymax'; yr.min = '8'; yr.max = '24'; yr.step = '2'; yr.value = String(yMaxH);
+    const yv = el('b', null, yMaxH === 24 ? TX('24h 全天', '24h (full)') : `${yMaxH}h`);
+    yr.addEventListener('input', () => {
+      yMaxH = Number(yr.value); yv.textContent = yMaxH === 24 ? TX('24h 全天', '24h (full)') : `${yMaxH}h`;
+      try { localStorage.setItem('punch.ymax', String(yMaxH)); } catch (e) {}
+      redraw();
+    });
+    yc.append(yr, yv); s1.querySelector('h3').append(sc0, yc);
+    s1.appendChild(cb); barChart(cb, per, today);
+    const lg = el('div', 'legend'); s1.appendChild(lg);
+    const anySleep = per.some(p => p.sleepMs);
+    function paintLegend() { lg.textContent = ''; for (const c of (showSleep && anySleep ? [SLEEP] : []).concat(catsSorted.slice().sort((a, b) => catOrder(a) - catOrder(b)))) { const sp = el('span'); sp.append(swatch(c), c); lg.appendChild(sp); } }
+    paintLegend();
 
-    const share = shareSection(doc, byCat, passed.length, passed.flatMap(p => p.list));
+    const sh = shareSection(doc, byCat, passed.length, passed.flatMap(p => p.work), passed.reduce((a, p) => a + p.sleepMs, 0));
     const two = el('div', 'two'); doc.appendChild(two);
-    const sa = section(two, TX('类别分布', 'By category')); catBars(sa, byCat);
+    const sa = section(two, TX('类别分布', 'By category'), TX('不含睡眠', 'excl. sleep')); catBars(sa, byCat);
     const sb = section(two, TX('小结', 'Summary')); const notes = [];
     if (all.length) {
+      notes.push(EN ? ['Activities took ', { b: hmDur(used) }, ` ${isWeek ? 'this week' : 'this month'}, ${delta(used, prev.used, label)}.`] : [`${isWeek ? '本周' : '本月'}共做事 `, { b: hmDur(used) }, `，${delta(used, prev.used, label)}。`]);
+      if (passed.length) notes.push(EN ? ['Of each 24-hour day, on average ', { b: `${Math.round(sh.work * 100)}%` }, ` went to activities, ${Math.round(sh.sleep * 100)}% to sleep, and ${Math.round(sh.free * 100)}% was free.`] : ['一天 24 小时里，平均 ', { b: `${Math.round(sh.work * 100)}%` }, ` 在做事，${Math.round(sh.sleep * 100)}% 在睡觉，${Math.round(sh.free * 100)}% 空余。`]);
+      if (ss) notes.push(EN ? ['Average sleep ', { b: hmDur(ss.avg) }, ` a night (${plural(ss.nights, 'night')} logged), usually asleep by ${ss.bed} and up at ${ss.wake}` + (pss ? `; ${ss.avg >= pss.avg ? '▲' : '▼'} ${hmDur(Math.abs(ss.avg - pss.avg))} vs. ${label}.` : '.')] : ['平均每晚睡 ', { b: hmDur(ss.avg) }, `（${ss.nights} 晚有记录），一般 ${ss.bed} 入睡、${ss.wake} 起床` + (pss ? `，比${label}${ss.avg >= pss.avg ? '多' : '少'} ${hmDur(Math.abs(ss.avg - pss.avg))}。` : '。')]);
       const best = passed.reduce((a, p) => (p.used > (a ? a.used : 0) ? p : a), null);
-      if (EN) {
-        notes.push([`Logged `, { b: hmDur(used) }, ` ${isWeek ? 'this week' : 'this month'}, ${delta(used, prev.used, label)}.`]);
-        if (passed.length) notes.push(['Logged time is ', { b: `${Math.round(share * 100)}%` }, ` of all the time in the days so far, about ${Math.round(share * 100)}% of each day on average.`]);
-        if (best) notes.push(['Busiest day: ', { b: `${wk(best.k)} ${md(best.k)}` }, `, ${hmDur(best.used)}.`]);
-        if (catsSorted[0]) notes.push(['Top category: ', { b: catsSorted[0] }, ` (${Math.round(byCat[catsSorted[0]] / totMs * 100)}%)` + (catsSorted[1] ? `, then ${catsSorted[1]} (${Math.round(byCat[catsSorted[1]] / totMs * 100)}%).` : '.')]);
-        notes.push([`Of the ${plural(passed.length, 'day')} so far, `, { b: plural(recDays, 'day') }, (recDays === 1 ? ' has' : ' have') + ' records' + (passed.length - recDays ? `; ${passed.length - recDays} ${passed.length - recDays === 1 ? 'has' : 'have'} none.` : '.')]);
-        if (longest) notes.push(['Longest entry: ', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `, ${hmDur(mins(longest.end - longest.start))} (started ${md(keyOf(longest.start))} ${hm(longest.start)}).`]);
-      } else {
-      notes.push([`${isWeek ? '本周' : '本月'}共记录 `, { b: hmDur(used) }, `，${delta(used, prev.used, label)}。`]);
-      if (passed.length) notes.push(['记录的时间占已过天数全部时间的 ', { b: `${Math.round(share * 100)}%` }, `，平均每天用掉一天的 ${Math.round(share * 100)}%。`]);
-      if (best) notes.push(['投入最多的一天是 ', { b: `${md(best.k)} ${wk(best.k)}` }, `，共 ${hmDur(best.used)}。`]);
-      if (catsSorted[0]) notes.push(['用时最多的类别是 ', { b: catsSorted[0] }, `（${Math.round(byCat[catsSorted[0]] / totMs * 100)}%）` + (catsSorted[1] ? `，其次是 ${catsSorted[1]}（${Math.round(byCat[catsSorted[1]] / totMs * 100)}%）。` : '。')]);
-      notes.push([`已过的 ${passed.length} 天里，有 `, { b: `${recDays} 天` }, ' 有记录' + (passed.length - recDays ? `，${passed.length - recDays} 天没有记录。` : '。')]);
-      if (longest) notes.push(['最长的一段：', { b: longest.task === longest.cat ? longest.cat : `${longest.cat} · ${longest.task}` }, `，${hmDur(mins(longest.end - longest.start))}（${md(keyOf(longest.start))} ${hm(longest.start)} 开始）。`]);
-      }
+      if (best) notes.push(EN ? ['Busiest day: ', { b: `${wk(best.k)} ${md(best.k)}` }, `, ${hmDur(best.used)}.`] : ['做事最多的一天是 ', { b: `${md(best.k)} ${wk(best.k)}` }, `，共 ${hmDur(best.used)}。`]);
+      if (catsSorted[0]) notes.push(EN ? ['Top category: ', { b: catsSorted[0] }, ` (${Math.round(byCat[catsSorted[0]] / totMs * 100)}%)` + (catsSorted[1] ? `, then ${catsSorted[1]} (${Math.round(byCat[catsSorted[1]] / totMs * 100)}%).` : '.')] : ['用时最多的类别是 ', { b: catsSorted[0] }, `（${Math.round(byCat[catsSorted[0]] / totMs * 100)}%）` + (catsSorted[1] ? `，其次是 ${catsSorted[1]}（${Math.round(byCat[catsSorted[1]] / totMs * 100)}%）。` : '。')]);
+      if (passed.length - recDays) notes.push(EN ? [`Of the ${plural(passed.length, 'day')} so far, `, { b: plural(passed.length - recDays, 'day') }, ' had no activities logged.'] : [`已过的 ${passed.length} 天里，有 `, { b: `${passed.length - recDays} 天` }, ' 没有做事记录。']);
+      if (longest) notes.push(EN ? ['Longest entry: ', { b: nameOf(longest) }, `, ${hmDur(mins(longest.end - longest.start))} (started ${md(keyOf(longest.start))} ${hm(longest.start)}).`] : ['最长的一段：', { b: nameOf(longest) }, `，${hmDur(mins(longest.end - longest.start))}（${md(keyOf(longest.start))} ${hm(longest.start)} 开始）。`]);
     }
     notesList(sb, notes);
 
     const sc = section(doc, TX('每日明细', 'Daily details'), TX('点任意一天看当天记录', 'Click any day to see its entries'));
     const wrap = el('div', 'tblwrap'); const t = el('table', 'tbl'); const hr = el('tr');
-    [[TX('日期', 'Date')], [TX('最早开始', 'First in')], [TX('最晚结束', 'Last out')], [TX('段数', 'Entries'), 'r'], [TX('主要类别', 'Top category')], [TX('记录时长', 'Logged'), 'r'], [TX('空余', 'Free'), 'r']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
+    [[TX('日期', 'Date')], [TX('最早开始', 'First in')], [TX('最晚结束', 'Last out')], [TX('段数', 'Entries'), 'r'], [TX('主要类别', 'Top category')], [TX('做事', 'Activities'), 'r'], [SLEEP, 'r'], [TX('空余', 'Free'), 'r']].forEach(([x, c]) => hr.appendChild(el('th', c, x)));
     const th = el('thead'); th.appendChild(hr); t.appendChild(th); const tb = el('tbody');
     for (const p of per) {
       const fut = p.k > today;
       const tr = el('tr', 'click' + (p.k === today ? ' today' : '') + (fut ? ' future' : '')); tr.tabIndex = 0;
       tr.appendChild(el('td', null, `${md(p.k)} ${wk(p.k)}`));
-      const f = p.list[0], l = p.list[p.list.length - 1];
+      const f = p.work[0], l = p.work[p.work.length - 1];
       tr.appendChild(el('td', f ? null : 'muted', f ? hm(f.start) : '—'));
       tr.appendChild(el('td', l ? (l.live ? 'muted' : null) : 'muted', l ? (l.live ? TX('进行中', 'Running') : hm(l.end)) : '—'));
-      tr.appendChild(el('td', 'r', p.list.length ? String(p.list.length) : (fut ? '' : '0')));
+      tr.appendChild(el('td', 'r', p.work.length ? String(p.work.length) : (fut ? '' : '0')));
       const top = Object.keys(p.by).sort((a, b) => p.by[b] - p.by[a]);
       const tk = el('td', 'cattd'); if (top.length) tk.append(swatch(top[0]), top[0] + (top.length > 1 ? TX(` 等 ${top.length} 类`, ` +${top.length - 1}`) : '')); else { tk.className = 'muted'; tk.textContent = '—'; }
       tr.appendChild(tk);
       tr.appendChild(el('td', 'r', fut ? '' : hmDur(p.used)));
-      tr.appendChild(el('td', 'r', fut ? '' : hmDur(1440 - p.used)));
+      const sl = el('td', 'r' + (p.night ? '' : ' muted'), fut ? '' : (p.night ? hmDur(p.night.min) : '—')); if (p.night) sl.title = TX(`${hm(p.night.bed)} 睡 · ${hm(p.night.wake)} 起`, `Bed ${hm(p.night.bed)} · up ${hm(p.night.wake)}`); tr.appendChild(sl);
+      tr.appendChild(el('td', 'r', fut ? '' : hmDur(p.free)));
       tr.addEventListener('click', () => openDay(p.k));
       tr.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openDay(p.k); } });
       tb.appendChild(tr);
     }
     t.appendChild(tb);
     const tf = el('tfoot'); const fr = el('tr'); const c1 = el('td', null, TX('合计', 'Total')); c1.colSpan = 3; fr.appendChild(c1);
-    fr.appendChild(el('td', 'r', String(all.length)));
+    fr.appendChild(el('td', 'r', String(work.length)));
     fr.appendChild(el('td', 'sumtasks', catsSorted.slice(0, 3).map(x => `${x} ${hmDur(mins(byCat[x]))}`).join('　') || '—'));
-    fr.appendChild(el('td', 'r', hmDur(used))); fr.appendChild(el('td', 'r', hmDur(freeM)));
+    fr.appendChild(el('td', 'r', hmDur(used)));
+    fr.appendChild(el('td', 'r', ss ? TX(`均 ${hmDur(ss.avg)}`, `avg ${hmDur(ss.avg)}`) : '—'));
+    fr.appendChild(el('td', 'r', hmDur(freeM)));
     tf.appendChild(fr); t.appendChild(tf); wrap.appendChild(t); sc.appendChild(wrap);
-    $('#footNote').textContent = loading ? TX('正在读取记录…', 'Loading records…') : TX('空余按已过的天数计算：每天 24 小时 − 记录时长', 'Free time counts days so far: 24 h a day − logged');
+    $('#footNote').textContent = loading ? TX('正在读取记录…', 'Loading records…') : TX('睡眠时长按醒来那天算一晚；24 小时占比和空余按实际落在哪天拆分', 'Sleep counts on the day you wake up; shares are split by calendar day');
     v.scrollTop = scrollTop;
   }
 
@@ -1359,6 +1459,8 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const box = el('div', 'exportbox xl');
     const doc = $('#view .doc').cloneNode(true);
     doc.querySelectorAll('.lnk, .tip').forEach(n => n.remove());
+    doc.querySelectorAll('.sctl').forEach(n => n.remove());
+    doc.querySelectorAll('.yctl').forEach(n => { n.textContent = `${TX('纵轴', 'Axis')} 0–${yMaxH}h${showSleep ? TX(' · 含睡眠', ' · incl. sleep') : ''}`; });
     const f = el('div', 'xfoot'); f.append(el('span', null, TX('插卡打卡钟 · 时间报告', 'Punch Clock · Time Report')), el('span', null, TX('空余 = 24 小时 − 记录时长', 'Free = 24 h − logged'))); doc.appendChild(f);
     box.appendChild(doc);
     // charts were laid out at the panel width; scale them to the page by width attribute after insertion
@@ -1377,18 +1479,18 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const t = el('table'); const cg = el('colgroup');
     ['17%', '13%', '31%', '13%', '13%', '13%'].forEach(w => { const col = el('col'); col.style.width = w; cg.appendChild(col); }); t.appendChild(cg);
     const hr = el('tr'); (EN ? ['Date', 'Category', 'Task', 'In', 'Out', 'Time'] : ['日期', '类别', '事项', '开始', '结束', '用时']).forEach(x => hr.appendChild(el('th', null, x))); const th = el('thead'); th.appendChild(hr); t.appendChild(th);
-    const tb = el('tbody'); let total = 0, count = 0;
+    const tb = el('tbody'); let total = 0, count = 0, sleepT = 0;
     const days = P.keys.filter(k => view !== 'month' || k <= today || dayEntries(k).length);
     for (const k of days) {
       const list = dayEntries(k);
       if (!list.length) { if (view === 'day') { const tr = el('tr'); const td = el('td', 'd', TX('这一天没有记录', 'No records this day')); td.colSpan = 6; tr.appendChild(td); tb.appendChild(tr); } else { const tr = el('tr'); tr.appendChild(el('td', 'd', `${md(k)} ${wk(k)}`)); for (let i = 0; i < 5; i++) tr.appendChild(el('td')); tb.appendChild(tr); } continue; }
       list.forEach((e, i) => {
-        const tr = el('tr'); total += e.end - e.start; count++;
+        const tr = el('tr'); if (isSleep(e)) sleepT += e.end - e.start; else { total += e.end - e.start; count++; }
         tr.appendChild(el('td', 'd', i ? '' : `${md(k)} ${wk(k)}`));
         tr.appendChild(el('td', 'c', e.cat));
         tr.appendChild(el('td', 't', e.task === e.cat ? '' : e.task));
-        tr.appendChild(el('td', null, hm(e.start)));
-        tr.appendChild(el('td', 'o', e.live ? '' : (e.end === nextMidnight(startOfKey(k)) ? '24:00' : hm(e.end))));
+        tr.appendChild(el('td', null, hm(e.oStart) + (e.cont ? '⁻¹' : '')));
+        tr.appendChild(el('td', 'o', e.live ? '' : (e.oEnd === nextMidnight(startOfKey(k)) ? '24:00' : hm(e.oEnd) + (e.more ? '⁺¹' : ''))));
         tr.appendChild(el('td', null, durShort(mins(e.end - e.start))));
         tb.appendChild(tr);
       });
@@ -1398,10 +1500,12 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const passedN = Math.max(1, P.keys.filter(k => k <= today).length);
     const usedM = mins(total);
     const fbar = el('div', 'xf');
-    const s1 = el('span', null, TX('合计', 'Total')); s1.appendChild(el('b', null, durShort(usedM)));
+    const sleepM = mins(sleepT);
+    const s1 = el('span', null, TX('做事', 'Activities')); s1.appendChild(el('b', null, durShort(usedM)));
+    const s4 = el('span', null, SLEEP); s4.appendChild(el('b', null, durShort(sleepM)));
     const s2 = el('span', null, TX('段数', 'Entries')); s2.appendChild(el('b', null, String(count)));
-    const s3 = el('span', null, TX('空余', 'Free')); s3.appendChild(el('b', null, durShort(Math.max(0, 1440 * passedN - usedM))));
-    fbar.append(s1, s2, s3); c.appendChild(fbar);
+    const s3 = el('span', null, TX('空余', 'Free')); s3.appendChild(el('b', null, durShort(Math.max(0, 1440 * passedN - usedM - sleepM))));
+    fbar.append(s1, s4, s3, s2); c.appendChild(fbar);
     const now = new Date(); const xs = el('div', 'xs'); xs.append(el('span', null, `${TX('打印于', 'Printed')} ${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())} ${hm(now)}`), el('span', null, TX('PUNCH-24 专用卡', 'PUNCH-24 CARD'))); c.appendChild(xs);
     return box;
   }
@@ -1474,7 +1578,7 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     const now = Date.now(), isToday = k === keyOf(now);
     const defStart = isToday ? Math.max(startOfKey(k), now - 3600000) : startOfKey(k) + 9 * 3600000;
     $('#eStart').value = hm(e ? e.start : defStart);
-    $('#eEnd').value = e ? (e.end === nextMidnight(startOfKey(k)) ? '00:00' : hm(e.end)) : hm(isToday ? now : defStart + 3600000);
+    $('#eEnd').value = e ? hm(e.end) : hm(isToday ? now : defStart + 3600000);
     $('#dErr').textContent = '';
     const del = $('#dDel'); del.hidden = !id; del.classList.remove('armed'); del.textContent = TX('删除', 'Delete');
     try { dlg.showModal(); } catch (err) { dlg.setAttribute('open', ''); }
@@ -1495,8 +1599,8 @@ dialog::backdrop { background: rgba(10, 14, 18, .5); }
     if (!$('#eStart').value || !$('#eEnd').value) { $('#dErr').textContent = TX('请填写开始和结束时间。', 'Please fill in the start and end times.'); return; }
     const toMs = v => { const [h, m] = v.split(':').map(Number); return startOfKey(k) + (h * 60 + m) * 60000; };
     const start = toMs($('#eStart').value);
-    const end = $('#eEnd').value === '00:00' ? nextMidnight(startOfKey(k)) : toMs($('#eEnd').value);
-    if (end <= start) { $('#dErr').textContent = TX('结束时间要晚于开始时间（跨午夜请分两天记）。', 'End must be after start (split entries that cross midnight into two days).'); return; }
+    let end = toMs($('#eEnd').value);
+    if (end <= start) { const [eh, em] = $('#eEnd').value.split(':').map(Number); end = startOfKey(shiftKey(k, 1)) + (eh * 60 + em) * 60000; }
     const list = state.days[k] = state.days[k] || [];
     const rec = { id: id || newId(), cat, task, desc: $('#eDesc').value.trim(), start, end };
     const i = list.findIndex(x => x.id === id); if (i >= 0) list[i] = rec; else list.push(rec);
